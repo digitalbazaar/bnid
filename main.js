@@ -120,7 +120,7 @@ export class IdGenerator {
    * @param {Number} [bitLength] - number of bits to generate. May also be an
    *   object with a bitLength property.
    *
-   * @return {Uint8Array}
+   * @return {IdGenerator}
    */
   constructor(bitLength) {
     // handle as object property
@@ -136,6 +136,11 @@ export class IdGenerator {
     });
   }
 
+  /**
+   * Generate random id bytes.
+   *
+   * @return {Uint8Array}
+   */
   async generate() {
     const buf = new Uint8Array(this.bitLength / 8);
     await getRandomBytes(buf);
@@ -155,7 +160,7 @@ export class IdEncoder {
    *   input byte size.
    * @param {boolean} [multibase=false] - use multibase encoding.
    *
-   * @return {object}
+   * @return {IdEncoder}
    */
   constructor({
     encoding = 'base58',
@@ -224,7 +229,7 @@ export class IdDecoder {
    * @param {boolean} [multibase=false] - use multibase encoding to detect
    *   the id format.
    *
-   * @return {Uint8Array}
+   * @return {IdDecoder}
    */
   constructor({
     encoding = 'base58',

@@ -1,8 +1,6 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
 import {
   encode as base58encoder,
   decode as base58decoder

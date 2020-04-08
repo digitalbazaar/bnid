@@ -37,19 +37,6 @@ The encoder and decoder support various encodings and options:
 - Fixed bit length. This is useful to ensure the output id length is constant
   even when the id starts with an arbitrary number of zeros.
 
-### Alternatives
-
-There are
-*[many](https://www.npmjs.com/search?q=random%20id%20generator)*
-*[other](https://www.npmjs.com/search?q=id%20generator%)*
-*[random](https://www.npmjs.com/search?q=random%20id%)*
-id generators out there. Please do your research to find what best fits your
-needs.
-
-If you just want a small id generator with a customizable alphabet, start here:
-
-- [Nano ID](https://www.npmjs.com/package/nanoid)
-
 ## Install
 
 ### NPM

@@ -88,9 +88,8 @@ function _base16Encoder({bytes, idEncoder}) {
     const wantLength = Math.ceil(fixedBitLength / _log2_16);
     // pad start with 0s
     return encoded.padStart(wantLength, '0');
-  } else {
-    return encoded;
   }
+  return encoded;
 }
 
 const _log2_58 = Math.log2(58);
@@ -104,9 +103,8 @@ function _base58Encoder({bytes, idEncoder}) {
     const wantLength = Math.ceil(fixedBitLength / _log2_58);
     // pad start with 0s (encoded as '1's)
     return encoded.padStart(wantLength, '1');
-  } else {
-    return encoded;
   }
+  return encoded;
 }
 
 export class IdGenerator {
@@ -182,7 +180,7 @@ export class IdEncoder {
         this.multibasePrefix = 'z';
         break;
       default:
-        throw new Error(`Unknown encoding type: "${encoding}"`);
+        throw new Error(`Unknown encoding type: "${encoding}".`);
     }
     this.fixedLength = fixedLength || fixedBitLength !== undefined;
     if(this.fixedLength) {
@@ -266,7 +264,7 @@ export class IdDecoder {
           encoding = 'base58';
           break;
         default:
-          throw new Error(`Unknown multibase prefix "${prefix}"`);
+          throw new Error(`Unknown multibase prefix "${prefix}".`);
       }
     } else {
       encoding = this.encoding;
@@ -286,10 +284,10 @@ export class IdDecoder {
         decoded = base58decoder(data);
         break;
       default:
-        throw new Error(`Unknown encoding "${encoding}"`);
+        throw new Error(`Unknown encoding "${encoding}".`);
     }
     if(!decoded) {
-      throw new Error(`Invalid encoded data "${data}"`);
+      throw new Error(`Invalid encoded data "${data}".`);
     }
     if(this.fixedBitLength) {
       return _bytesWithBitLength({

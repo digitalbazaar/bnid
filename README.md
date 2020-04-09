@@ -86,7 +86,9 @@ Some setup overhead can be avoided by using the component `IdGenerator` and
 import {IdGenerator, IdEncoder} from 'bnid';
 
 // 64 bit random id generator
-const generator = new IdGenerator(64);
+const generator = new IdGenerator({
+  bitLength: 64
+});
 // base58, multibase, fixed-length encoder
 const encoder = new IdEncoder({
   encoding: 'base58',
@@ -106,7 +108,9 @@ Some setup overhead can be avoided by using the component `IdGenerator` and
 import {IdGenerator, IdEncoder, IdDecoder} from 'bnid';
 
 // 64 bit random id generator
-const generator = new IdGenerator(64);
+const generator = new IdGenerator({
+  bitLength: 64
+});
 // base58, multibase, fixed-length encoder
 const encoder = new IdEncoder({
   encoding: 'base58',
@@ -134,9 +138,9 @@ const id2bytes = decoder.decode(id2);
 
 Generate a string id. See `IdGenerator` and `IdEncoder` for options.
 
-### `decodeId(id, options)`
+### `decodeId(options)`
 
-Decode a string id. See `IdDecoder` for options.
+Decode the options.id string. See `IdDecoder` for other options.
 
 ### `IdGenerator`
 
@@ -184,7 +188,7 @@ Options:
 - `multibase`: `true` to use multibase encoding to detect id format. (default:
   `false`)
 
-#### `decode(id, options)`
+#### `decode(id)`
 
 Decode id string into bytes.
 

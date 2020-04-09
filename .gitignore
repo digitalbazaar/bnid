@@ -1,7 +1,9 @@
 *.log
 *.sw[nop]
 *~
+.DS_Store
 .cache
+.nyc_output
 .project
 .settings
 .vscode

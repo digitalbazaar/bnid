@@ -67,7 +67,7 @@ bytes.
 
 To generate a default [Base58][], 128 bit, non-fixed-length id:
 
-```
+```js
 import {generateId} from 'bnid';
 
 const id = await generateId();
@@ -75,7 +75,7 @@ const id = await generateId();
 
 To generate a [Base58][], 128 bit, fixed-length id:
 
-```
+```js
 import {generateId} from 'bnid';
 
 const id = await generateId({
@@ -88,7 +88,7 @@ const id = await generateId({
 Some setup overhead can be avoided by using the component `IdGenerator` and
 `IdEncoder` classes.
 
-```
+```js
 import {IdGenerator, IdEncoder} from 'bnid';
 
 // 64 bit random id generator
@@ -110,7 +110,7 @@ const id2 = encoder.encode(await generator.generate());
 Some setup overhead can be avoided by using the component `IdGenerator` and
 `IdEncoder` classes.
 
-```
+```js
 import {IdGenerator, IdEncoder, IdDecoder} from 'bnid';
 
 // 64 bit random id generator

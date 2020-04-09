@@ -20,6 +20,26 @@
 This library provides tools for Web and Node.js to generate random ids and
 encode and decode them in various base-N encodings.
 
+## Install
+
+### NPM
+
+```
+npm install bnid
+```
+
+### Git
+
+To install locally (for development):
+
+```
+git clone https://github.com/digitalbazaar/bnid.git
+cd bnid
+npm install
+```
+
+## Usage
+
 The interface follows the [TextEncoder][]/[TextDecoder][] interfaces and
 provides [IdEncoder](#idencoder) and [IdDecoder](#iddecoder) classes. Instances
 can be configured with reusable encodings and other parameters. The encoder
@@ -42,26 +62,6 @@ example. When encoding, the `fixedLength` or `fixedBitLength` options can be
 used to force the output to be a constant length. When decoding, the
 `fixedBitLength` options can be used to ensure a constant length array of
 bytes.
-
-## Install
-
-### NPM
-
-```
-npm install bnid
-```
-
-### Git
-
-To install locally (for development):
-
-```
-git clone https://github.com/digitalbazaar/bnid.git
-cd bnid
-npm install
-```
-
-## Usage
 
 ### Generate an ID
 

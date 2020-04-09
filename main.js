@@ -113,10 +113,10 @@ export class IdGenerator {
    *
    * An IdGenerator generates an array of id bytes.
    *
-   * @param {Number} [bitLength] - number of bits to generate. May also be an
-   *   object with a bitLength property.
+   * @param {object} [options] - The options to use.
+   * @param {number} [options.bitLength=128] - Number of bits to generate.
    *
-   * @return {IdGenerator}
+   * @returns {IdGenerator} - New IdGenerator.
    */
   constructor({
     bitLength
@@ -133,7 +133,7 @@ export class IdGenerator {
   /**
    * Generate random id bytes.
    *
-   * @return {Uint8Array}
+   * @returns {Uint8Array} - Array of random id bytes.
    */
   async generate() {
     const buf = new Uint8Array(this.bitLength / 8);
@@ -148,13 +148,15 @@ export class IdEncoder {
    *
    * An IdEncoder encodes an array of id bytes into a specific encoding.
    *
-   * @param {string} [encoding='base58'] - encoding format.
-   * @param {boolean} [fixedLength=false] - true to ensure fixed output length.
-   * @param {Number} [fixedBitLength] - fixed output bit length or 0 to base on
-   *   input byte size.
-   * @param {boolean} [multibase=false] - use multibase encoding.
+   * @param {object} [options] - The options to use.
+   * @param {string} [options.encoding='base58'] - Encoding format.
+   * @param {boolean} [options.fixedLength=false] - `true` to ensure fixed
+   *   output length.
+   * @param {number} [options.fixedBitLength] - Fixed output bit length or 0 to
+   *   base on input byte size.
+   * @param {boolean} [options.multibase=false] - Use multibase encoding.
    *
-   * @return {IdEncoder}
+   * @returns {IdEncoder} - New IdEncoder.
    */
   constructor({
     encoding = 'base58',
@@ -195,9 +197,9 @@ export class IdEncoder {
   /**
    * Encode id bytes into a string.
    *
-   * @param {Uint8Array} bytes - bytes to encode.
+   * @param {Uint8Array} bytes - Bytes to encode.
    *
-   * @return {string}
+   * @returns {string} - Encoded string.
    */
   encode(bytes) {
     const encoded = this.encoder({bytes, idEncoder: this});
@@ -216,14 +218,15 @@ export class IdDecoder {
    * use the fixedBitLength option to avoid padding ids resulting in a larger
    * than expected byte length.
    *
-   * @param {string} [encoding='base58'] - encoding format. Ignored if
+   * @param {object} [options] - The options to use.
+   * @param {string} [options.encoding='base58'] - Encoding format. Ignored if
    *   multibase is true.
-   * @param {Number} [fixedBitLength] - fixed output bit length. Values with
-   *   leading non-zero data will error.
-   * @param {boolean} [multibase=false] - use multibase encoding to detect
-   *   the id format.
+   * @param {number} [options.fixedBitLength] - Fixed output bit length. Values
+   *   with leading non-zero data will error.
+   * @param {boolean} [options.multibase=false] - Use multibase encoding to
+   *   detect the id format.
    *
-   * @return {IdDecoder}
+   * @returns {IdDecoder} - New IdDecoder.
    */
   constructor({
     encoding = 'base58',
@@ -238,9 +241,9 @@ export class IdDecoder {
   /**
    * Decode id string into bytes.
    *
-   * @param {string} id - id to decode.
+   * @param {string} id - Id to decode.
    *
-   * @return {Uint8Array}
+   * @returns {Uint8Array} - Array of decoded id bytes.
    */
   decode(id) {
     let encoding;
@@ -297,11 +300,28 @@ export class IdDecoder {
   }
 }
 
+/**
+ * Generates an encoded id string from random bits.
+ *
+ * @param {object} [options] - The options to use. See `IdEncoder` and
+ *   `IdGenerator` for available options.
+ *
+ * @returns {string} - Encoded string id.
+ */
 export async function generateId(options) {
   return new IdEncoder(options)
     .encode(await new IdGenerator(options).generate());
 }
 
+/**
+ * Decodes an encoded id string to an array of bytes.
+ *
+ * @param {object} options - The options to use. See `IdDecoder` for available
+ *   options.
+ * @param {string} options.id - Id to decode.
+ *
+ * @returns {Uint8Array} - Decoded array of id bytes.
+ */
 export function decodeId(options) {
   return new IdDecoder(options).decode(options.id);
 }

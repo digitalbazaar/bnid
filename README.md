@@ -17,9 +17,8 @@
 
 ## Background
 
-This library provides tools for Web and Node.js to generate random ids and and
-encode and decode them in various base-N encodings. It came about from a need
-for a more compact encoding of ~128 bit ids than [UUID Version 4][] provided.
+This library provides tools for Web and Node.js to generate random ids and
+encode and decode them in various base-N encodings.
 
 The interface follows the [TextEncoder][]/[TextDecoder][] interfaces and
 provides [IdEncoder](#idencoder) and [IdDecoder](#iddecoder) classes. Instances
@@ -214,6 +213,5 @@ Digital Bazaar: support@digitalbazaar.com
 [Base58]: https://en.wikipedia.org/wiki/Base58
 [TextDecoder]: https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder
 [TextEncoder]: https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder
-[UUID Version 4]: https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)
 [base58-universal]: https://github.com/digitalbazaar/base58-universal
 [multibase]: https://github.com/multiformats/multibase

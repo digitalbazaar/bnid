@@ -150,7 +150,7 @@ Decode the options.id string. See `IdDecoder` for other options.
 
 ### `IdGenerator`
 
-An IdGenerator generates an array of id bytes.
+An `IdGenerator` generates an array of id bytes.
 
 #### `constuctor(options)` / `constructor(bitLength)`
 
@@ -163,7 +163,7 @@ Generate random id bytes.
 
 ### `IdEncoder`
 
-An IdEncoder encodes an array of id bytes into a specific encoding.
+An `IdEncoder` encodes an array of id bytes into a specific encoding.
 
 #### `constuctor(options)`
 
@@ -182,7 +182,7 @@ Encode id bytes into a string.
 
 ### `IdDecoder`
 
-An IdEncoder encodes an array of id bytes into a specific encoding.
+An `IdEncoder` encodes an array of id bytes into a specific encoding.
 
 #### `constuctor(options)`
 

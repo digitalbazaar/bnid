@@ -36,6 +36,13 @@ The encoder and decoder support various encodings and options:
 - Fixed bit length. This is useful to ensure the output id length is constant
   even when the id starts with an arbitrary number of zeros.
 
+The fixed length options can be important when using encodings that have
+variable length outputs depending on the input length. `base58btc` is and
+example. When encoding, the `fixedLength` or `fixedBitLength` options can be
+used to force the output to be a constant length. When decoding, the
+`fixedBitLength` options can be used to ensure a constant length array of
+bytes.
+
 ## Install
 
 ### NPM

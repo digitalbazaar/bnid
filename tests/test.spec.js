@@ -33,7 +33,9 @@ describe('bzid', () => {
       id.length.should.equal(16);
     });
     it('should generate 8 bit id', async () => {
-      const d = new IdGenerator(8);
+      const d = new IdGenerator({
+        bitLength: 8
+      });
       should.exist(d);
       const id = await d.generate();
       should.exist(id);
@@ -42,12 +44,16 @@ describe('bzid', () => {
     });
     it('should not generate 0 bit id', async () => {
       expect(() => {
-        new IdGenerator(0);
+        new IdGenerator({
+          bitLength: 0
+        });
       }).throws();
     });
     it('should not generate odd bits id', async () => {
       expect(() => {
-        new IdGenerator(10);
+        new IdGenerator({
+          bitLength: 10
+        });
       }).throws();
     });
   });
@@ -562,7 +568,8 @@ describe('bzid', () => {
         [[0xff, 0x00, 0xff, 0x00], 'ff00ff00']
       ];
       for(const [expected, input] of data) {
-        const decoded = decodeId(input, {
+        const decoded = decodeId({
+          id: input,
           encoding: 'base16'
         });
         decoded.should.equalBytes(expected);
@@ -579,7 +586,8 @@ describe('bzid', () => {
         [[0x00, 0x00, 0x01], '112'],
       ];
       for(const [expected, input] of data) {
-        const decoded = decodeId(input, {
+        const decoded = decodeId({
+          id: input,
           encoding: 'base58'
         });
         decoded.should.equalBytes(expected);
@@ -598,7 +606,8 @@ describe('bzid', () => {
         [[0x0a, 0x0b, 0x0c], 'F0A0B0C'],
       ];
       for(const [expected, input] of data) {
-        const decoded = decodeId(input, {
+        const decoded = decodeId({
+          id: input,
           multibase: true,
         });
         decoded.should.equalBytes(expected);
@@ -623,7 +632,8 @@ describe('bzid', () => {
         [32, [0x0a, 0x0b, 0x0c, 0x0d], 'f0a0b0c0d'],
       ];
       for(const [fixedBitLength, expected, input] of data) {
-        const decoded = decodeId(input, {
+        const decoded = decodeId({
+          id: input,
           multibase: true,
           fixedBitLength
         });

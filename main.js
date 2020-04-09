@@ -118,11 +118,9 @@ export class IdGenerator {
    *
    * @return {IdGenerator}
    */
-  constructor(bitLength) {
-    // handle as object property
-    if(typeof bitLength === 'object') {
-      bitLength = bitLength.bitLength;
-    }
+  constructor({
+    bitLength
+  } = {}) {
     this.bitLength = _calcOptionsBitLength({
       // default to 128 bits / 16 bytes
       defaultLength: 128,
@@ -304,6 +302,6 @@ export async function generateId(options) {
     .encode(await new IdGenerator(options).generate());
 }
 
-export function decodeId(id, options) {
-  return new IdDecoder(options).decode(id);
+export function decodeId(options) {
+  return new IdDecoder(options).decode(options.id);
 }

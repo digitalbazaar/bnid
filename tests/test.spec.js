@@ -18,7 +18,7 @@ import {
   decodeId
 } from '..';
 
-describe('bzid', () => {
+describe('bnid', () => {
   describe('IdGenerator', () => {
     it('should create IdGenerator', async () => {
       const d = new IdGenerator();

@@ -15,7 +15,8 @@ function _calcOptionsBitLength({
   defaultLength,
   // TODO: allow any bit length
   minLength = 8,
-  maxLength = Infinity,
+  // TODO: support maxLength
+  //maxLength = Infinity,
   bitLength
 }) {
   if(bitLength === undefined) {
@@ -28,9 +29,10 @@ function _calcOptionsBitLength({
   if(bitLength < minLength) {
     throw new Error(`Minimum bit length is ${minLength}.`);
   }
-  if(bitLength > maxLength) {
-    throw new Error(`Maximum bit length is ${maxLength}.`);
-  }
+  // TODO: support maxLength
+  //if(bitLength > maxLength) {
+  //  throw new Error(`Maximum bit length is ${maxLength}.`);
+  //}
   return bitLength;
 }
 
@@ -52,9 +54,6 @@ function _bytesWithBitLength({
   bytes,
   bitLength
 }) {
-  if(bitLength === 0) {
-    return bytes;
-  }
   const length = bytes.length * 8;
   if(length === bitLength) {
     return bytes;

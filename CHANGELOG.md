@@ -1,6 +1,6 @@
 # bnid ChangeLog
 
-## 0.1.0 - 2020-XX-XX
+## 1.0.0 - 2020-05-07
 
 ### Added
 - Add core files.

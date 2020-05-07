@@ -59,6 +59,19 @@ describe('bnid', () => {
   });
 
   describe('IdEncoder', () => {
+    describe('general', () => {
+      it('should create IdEncoder', async () => {
+        const e = new IdEncoder();
+        should.exist(e);
+      });
+      it('should reject unknown encoding', async () => {
+        expect(() => {
+          new IdEncoder({
+            encoding: 'baseBogus'
+          });
+        }).throws();
+      });
+    });
     describe('base16', () => {
       it('should create IdEncoder', async () => {
         const e = new IdEncoder({
@@ -305,9 +318,51 @@ describe('bnid', () => {
   });
 
   describe('IdDecoder', () => {
-    it('should create IdDecoder', async () => {
-      const d = new IdDecoder();
-      should.exist(d);
+    describe('general', () => {
+      it('should create IdDecoder', async () => {
+        const d = new IdDecoder();
+        should.exist(d);
+      });
+      it('should not decode empty multibase data', async () => {
+        const d = new IdDecoder({
+          multibase: true
+        });
+        const data = [
+          ''
+        ];
+        for(const input of data) {
+          expect(() => {
+            d.decode(input);
+          }).throws();
+        }
+      });
+      it('should not decode invalid multibase data', async () => {
+        const d = new IdDecoder({
+          multibase: true
+        });
+        const data = [
+          // invalid/unknown multibase prefix
+          '@0000'
+        ];
+        for(const input of data) {
+          expect(() => {
+            d.decode(input);
+          }).throws();
+        }
+      });
+      it('should reject invalid encoding', async () => {
+        const d = new IdDecoder({
+          encoding: 'baseBogus'
+        });
+        const data = [
+          '00'
+        ];
+        for(const input of data) {
+          expect(() => {
+            d.decode(input);
+          }).throws();
+        }
+      });
     });
     describe('base16', () => {
       it('should create IdDecoder', async () => {
@@ -319,6 +374,17 @@ describe('bnid', () => {
       it('should default b16 decode "00"', async () => {
         const d = new IdDecoder({
           encoding: 'base16'
+        });
+        const e = '00';
+        const b = d.decode(e);
+        should.exist(b);
+        b.should.be.instanceof(Uint8Array);
+        b.length.should.equal(1);
+        b.should.equalBytes([0]);
+      });
+      it('should default "hex" decode "00"', async () => {
+        const d = new IdDecoder({
+          encoding: 'hex'
         });
         const e = '00';
         const b = d.decode(e);
@@ -395,6 +461,9 @@ describe('bnid', () => {
           encoding: 'base16'
         });
         const data = [
+          // invalid length
+          '0',
+          '000'
           /* TODO: check hex data?  or assume valid input?
           '0@',
           '##',
@@ -403,7 +472,7 @@ describe('bnid', () => {
         ];
         for(const input of data) {
           expect(() => {
-            console.log(d.decode(input));
+            d.decode(input);
           }).throws();
         }
       });
@@ -615,6 +684,7 @@ describe('bnid', () => {
     });
     it('should decode multibase fixedLength ids', async () => {
       const data = [
+        [0, [], 'f'],
         [8, [0x00], 'z1'],
         [8, [0x00], 'f00'],
         [16, [0x00, 0x00], 'z1'],

@@ -44,8 +44,7 @@ function _calcDataBitLength({
     return bitLength;
   }
   if(bitLength > maxLength) {
-    throw new Error(
-      `Input length greater than ${maxLength} bits.`);
+    throw new Error(`Input length greater than ${maxLength} bits.`);
   }
   return maxLength;
 }
@@ -153,7 +152,7 @@ export class IdEncoder {
    *   output length.
    * @param {number} [options.fixedBitLength] - Fixed output bit length or 0 to
    *   base on input byte size.
-   * @param {boolean} [options.multibase=false] - Use multibase encoding.
+   * @param {boolean} [options.multibase=true] - Use multibase encoding.
    *
    * @returns {IdEncoder} - New IdEncoder.
    */
@@ -161,7 +160,7 @@ export class IdEncoder {
     encoding = 'base58',
     fixedLength = false,
     fixedBitLength,
-    multibase = false
+    multibase = true
   } = {}) {
     switch(encoding) {
       case 'hex':

@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+/*!
+ * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+ */
+
+const bnid = require('.');
+
+async function main() {
+  const args = require('yargs')
+    .usage('Usage: $0 [options]')
+    .option('bit-length', {
+      alias: 'n',
+      describe: 'Number of random bits',
+      type: 'number',
+      default: 128
+    })
+    .option('fixed-length', {
+      alias: 'f',
+      describe:
+        'Ensure fixed length output string\n' +
+        'Helps to account for variable base58 encoded length. ' +
+        'Decoders may output an extra leading zero byte for certain fixed ' +
+        'encoded values.',
+      type: 'boolean',
+      default: false
+    })
+    .option('fixed-bit-length', {
+      alias: 'b',
+      describe:
+        'Fixed bit length\n' +
+        'Allows for leading zero bits to be encoded.',
+      type: 'number'
+    })
+    .option('encoding', {
+      alias: 'e',
+      describe: 'Encoding to use',
+      choices: [
+        'hex', 'base16',
+        'base16upper', 'b16upper',
+        'base58', 'base58btc'
+      ],
+      default: 'base58btc'
+    })
+    .option('multibase', {
+      alias: 'm',
+      describe: 'Use multibase format',
+      type: 'boolean',
+      default: true
+    })
+    .alias('h', 'help')
+    .help('help', 'DSC')
+    .argv;
+  try {
+    console.log(await bnid.generateId({
+      bitLength: args.bitLength,
+      encoding: args.encoding,
+      multibase: args.multibase,
+      fixedLength: args.fixedLength,
+      fixedBitLength: args.fixedBitLength
+    }));
+  } catch(e) {
+    console.error(e);
+    process.exit(1);
+  }
+}
+
+main();

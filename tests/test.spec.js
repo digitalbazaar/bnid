@@ -81,7 +81,8 @@ describe('bnid', () => {
       });
       it('should b16 encode [0]', async () => {
         const e = new IdEncoder({
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         const data = new Uint8Array([0]);
         const d = e.encode(data);
@@ -116,7 +117,8 @@ describe('bnid', () => {
       });
       it('should hex encode [0]', async () => {
         const e = new IdEncoder({
-          encoding: 'hex'
+          encoding: 'hex',
+          multibase: false
         });
         const data = new Uint8Array([0]);
         const d = e.encode(data);
@@ -127,7 +129,8 @@ describe('bnid', () => {
       });
       it('should b16 encode data', async () => {
         const e = new IdEncoder({
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         const data = [
           [new Uint8Array([0x00, 0x00]), '0000'],
@@ -143,7 +146,8 @@ describe('bnid', () => {
       });
       it('should b16u encode data', async () => {
         const e = new IdEncoder({
-          encoding: 'base16upper'
+          encoding: 'base16upper',
+          multibase: false
         });
         const data = [
           [new Uint8Array([0x00, 0x00]), '0000'],
@@ -160,7 +164,8 @@ describe('bnid', () => {
       it('should b16 encode fixed input data', async () => {
         const e = new IdEncoder({
           encoding: 'base16',
-          fixedLength: true
+          fixedLength: true,
+          multibase: false
         });
         const data = [
           [new Uint8Array([0x00, 0x00]), '0000'],
@@ -177,7 +182,8 @@ describe('bnid', () => {
       it('should b16 encode fixed size data', async () => {
         const e = new IdEncoder({
           encoding: 'base16',
-          fixedBitLength: 32
+          fixedBitLength: 32,
+          multibase: false
         });
         const data = [
           [new Uint8Array([0x00, 0x00]), '00000000'],
@@ -218,12 +224,13 @@ describe('bnid', () => {
         const d = e.encode(data);
         should.exist(d);
         d.should.be.a('string');
-        d.length.should.equal(1);
-        d.should.equal('1');
+        d.length.should.equal(2);
+        d.should.equal('z1');
       });
       it('should explicitly b58 encode [0]', async () => {
         const e = new IdEncoder({
-          encoding: 'base58'
+          encoding: 'base58',
+          multibase: false
         });
         const data = new Uint8Array([0]);
         const d = e.encode(data);
@@ -232,9 +239,10 @@ describe('bnid', () => {
         d.length.should.equal(1);
         d.should.equal('1');
       });
-      it('should b58btc encode [0]', async () => {
+      it('should non-multibase b58btc encode [0]', async () => {
         const e = new IdEncoder({
-          encoding: 'base58btc'
+          encoding: 'base58btc',
+          multibase: false
         });
         const data = new Uint8Array([0]);
         const d = e.encode(data);
@@ -255,7 +263,9 @@ describe('bnid', () => {
         d.should.equal('z1');
       });
       it('should b58 encode data', async () => {
-        const e = new IdEncoder();
+        const e = new IdEncoder({
+          multibase: false
+        });
         const data = [
           [[0x00, 0x00], '11'],
           [[0x00, 0x01], '12'],
@@ -270,7 +280,8 @@ describe('bnid', () => {
       });
       it('should b58 encode fixed input data', async () => {
         const e = new IdEncoder({
-          fixedLength: true
+          fixedLength: true,
+          multibase: false
         });
         const data = [
           [[0x00, 0x00], '111'],
@@ -286,7 +297,8 @@ describe('bnid', () => {
       });
       it('should b58 encode fixed size data', async () => {
         const e = new IdEncoder({
-          fixedBitLength: 32
+          fixedBitLength: 32,
+          multibase: false
         });
         const data = [
           [[0x00, 0x00], '111111'],
@@ -593,20 +605,20 @@ describe('bnid', () => {
       const id = await generateId();
       should.exist(id);
       id.should.be.a('string');
-      // not fixed length, so could be 21 or 22 chars
-      id.length.should.be.gte(21);
-      id.length.should.be.lte(22);
+      // not fixed length, so could be 'z' + 21 or 22 chars
+      id.length.should.be.gte(1 + 22);
+      id.length.should.be.lte(1 + 23);
+      id[0].should.equal('z');
     });
-    it('should generate default multibase id', async () => {
+    it('should generate default non-multibase id', async () => {
       const id = await generateId({
-        multibase: true
+        multibase: false
       });
       should.exist(id);
       id.should.be.a('string');
-      // not fixed length, so could be 'z' + 21 or 22 chars
-      id.length.should.be.gte(1 + 21);
-      id.length.should.be.lte(1 + 22);
-      id[0].should.equal('z');
+      // not fixed length, so could be 21 or 22 chars
+      id.length.should.be.gte(21);
+      id.length.should.be.lte(22);
     });
     it('should generate default multibase fixed length id', async () => {
       const id = await generateId({
@@ -621,7 +633,8 @@ describe('bnid', () => {
     it('should generate 256 bit fixed length id', async () => {
       const id = await generateId({
         bitLength: 256,
-        fixedLength: true
+        fixedLength: true,
+        multibase: false
       });
       should.exist(id);
       id.should.be.a('string');

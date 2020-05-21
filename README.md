@@ -65,7 +65,8 @@ bytes.
 
 ### Generate an ID
 
-To generate a default [Base58][], 128 bit, non-fixed-length id:
+To generate a default [Base58][], 128 bit, non-fixed-length, multibase encoded
+id:
 
 ```js
 import {generateId} from 'bnid';
@@ -174,7 +175,7 @@ Options:
 - `fixedLength`: `true` to ensure fixed output length. (default: false)
 - `fixedBitLength`: fixed output bit length or 0 to base on input byte size.
   (default: 0)
-- `multibase`: `true` to use multibase encoding. (default: `false`)
+- `multibase`: `true` to use multibase encoding. (default: `true`)
 
 #### `encode(bytes)`
 

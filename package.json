@@ -48,10 +48,10 @@
   ],
   "dependencies": {
     "base58-universal": "^1.0.0",
-    "benchmark": "^2.1.4",
     "esm": "^3.2.22"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "chai-bytes": "^0.1.2",
     "cross-env": "^6.0.3",

@@ -445,7 +445,8 @@ describe('bnid', () => {
       });
       it('should default b16 decode "00"', async () => {
         const d = new IdDecoder({
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         const e = '00';
         const b = d.decode(e);
@@ -456,7 +457,8 @@ describe('bnid', () => {
       });
       it('should default "hex" decode "00"', async () => {
         const d = new IdDecoder({
-          encoding: 'hex'
+          encoding: 'hex',
+          multibase: false
         });
         const e = '00';
         const b = d.decode(e);
@@ -467,7 +469,8 @@ describe('bnid', () => {
       });
       it('should b16 decode data', async () => {
         const d = new IdDecoder({
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         const data = [
           [[0x00], '00'],
@@ -494,7 +497,8 @@ describe('bnid', () => {
       it('should b16 decode fixed size data', async () => {
         const d = new IdDecoder({
           encoding: 'base16',
-          fixedBitLength: 16
+          fixedBitLength: 16,
+          multibase: false
         });
         const data = [
           [[0x00, 0x00], '00'],
@@ -510,8 +514,7 @@ describe('bnid', () => {
       });
       it('should b16 decode multibase data', async () => {
         const d = new IdDecoder({
-          encoding: 'base16',
-          multibase: true
+          encoding: 'base16'
         });
         const data = [
           [[0x00], 'f00'],
@@ -568,17 +571,19 @@ describe('bnid', () => {
         const d = new IdDecoder();
         should.exist(d);
       });
-      it('should default b58 decode "1"', async () => {
+      it('should default b58 decode "z1"', async () => {
         const d = new IdDecoder();
-        const e = '1';
+        const e = 'z1';
         const b = d.decode(e);
         should.exist(b);
         b.should.be.instanceof(Uint8Array);
         b.length.should.equal(1);
         b.should.equalBytes([0]);
       });
-      it('should b58 decode data', async () => {
-        const d = new IdDecoder();
+      it('should b58 decode non-multibase data', async () => {
+        const d = new IdDecoder({
+          multibase: false
+        });
         const data = [
           [[0x00, 0x00], '11'],
           [[0x00, 0x01], '12'],
@@ -593,7 +598,8 @@ describe('bnid', () => {
       });
       it('should b58 decode fixed size data', async () => {
         const d = new IdDecoder({
-          fixedBitLength: 16
+          fixedBitLength: 16,
+          multibase: false
         });
         const data = [
           [[0x00, 0x00], '111'],
@@ -613,9 +619,7 @@ describe('bnid', () => {
         }
       });
       it('should b58 decode multibase data', async () => {
-        const d = new IdDecoder({
-          multibase: true
-        });
+        const d = new IdDecoder();
         const data = [
           [[0x00, 0x00], 'z11'],
           [[0x00, 0x01], 'z12'],
@@ -634,7 +638,9 @@ describe('bnid', () => {
         }
       });
       it('should not b58 decode invalid data', async () => {
-        const d = new IdDecoder();
+        const d = new IdDecoder({
+          multibase: false
+        });
         const data = [
           '0',
           'O',
@@ -652,7 +658,7 @@ describe('bnid', () => {
           fixedBitLength: 16
         });
         const data = [
-          'fxr', // [0x01, 0xff, 0xff]
+          'zfxr', // [0x01, 0xff, 0xff]
         ];
         for(const input of data) {
           expect(() => {
@@ -715,7 +721,8 @@ describe('bnid', () => {
       for(const [expected, input] of data) {
         const decoded = decodeId({
           id: input,
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         decoded.should.equalBytes(expected);
       }
@@ -733,7 +740,8 @@ describe('bnid', () => {
       for(const [expected, input] of data) {
         const decoded = decodeId({
           id: input,
-          encoding: 'base58'
+          encoding: 'base58',
+          multibase: false
         });
         decoded.should.equalBytes(expected);
       }
@@ -752,8 +760,7 @@ describe('bnid', () => {
       ];
       for(const [expected, input] of data) {
         const decoded = decodeId({
-          id: input,
-          multibase: true,
+          id: input
         });
         decoded.should.equalBytes(expected);
       }
@@ -780,7 +787,6 @@ describe('bnid', () => {
       for(const [fixedBitLength, expected, input] of data) {
         const decoded = decodeId({
           id: input,
-          multibase: true,
           fixedBitLength
         });
         decoded.should.equalBytes(expected);

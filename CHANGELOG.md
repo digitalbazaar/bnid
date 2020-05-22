@@ -1,7 +1,7 @@
 # bnid ChangeLog
 
 ### Changed
-- **BREAKING**: `multibase` now defaults to `true` for `generateId()`;
+- **BREAKING**: `multibase` now defaults to `true` for all APIs.
 - Remove travis-ci testing in favor of GitHub Actions.
 
 ### Added

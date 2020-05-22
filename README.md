@@ -1,6 +1,6 @@
 # JavaScript Base-N Id Generator _(bnid)_
 
-[![Build Status](https://travis-ci.org/digitalbazaar/bnid.png?branch=master)](https://travis-ci.org/digitalbazaar/bnid)
+[![Node.js CI](https://github.com/digitalbazaar/bnid/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/bnid/actions?query=workflow%3A%22Node.js+CI%22)
 
 > A JavaScript library for Web browsers and Node.js apps to generate random
 > ids and encode and decode them using various base-N encodings.

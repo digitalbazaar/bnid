@@ -77,6 +77,20 @@ describe('bnid', () => {
         }
       }
     });
+    it('should reject unknown min encoding', async () => {
+      expect(() => {
+        minEncodedIdBytes({
+          encoding: 'baseBogus'
+        });
+      }).throws();
+    });
+    it('should reject unknown max encoding', async () => {
+      expect(() => {
+        maxEncodedIdBytes({
+          encoding: 'baseBogus'
+        });
+      }).throws();
+    });
   });
 
   describe('IdGenerator', () => {
@@ -396,9 +410,7 @@ describe('bnid', () => {
         should.exist(d);
       });
       it('should not decode empty multibase data', async () => {
-        const d = new IdDecoder({
-          multibase: true
-        });
+        const d = new IdDecoder();
         const data = [
           ''
         ];
@@ -409,9 +421,7 @@ describe('bnid', () => {
         }
       });
       it('should not decode invalid multibase data', async () => {
-        const d = new IdDecoder({
-          multibase: true
-        });
+        const d = new IdDecoder();
         const data = [
           // invalid/unknown multibase prefix
           '@0000'
@@ -424,7 +434,8 @@ describe('bnid', () => {
       });
       it('should reject invalid encoding', async () => {
         const d = new IdDecoder({
-          encoding: 'baseBogus'
+          encoding: 'baseBogus',
+          multibase: false
         });
         const data = [
           '00'
@@ -533,7 +544,8 @@ describe('bnid', () => {
       });
       it('should not b16 decode invalid data', async () => {
         const d = new IdDecoder({
-          encoding: 'base16'
+          encoding: 'base16',
+          multibase: false
         });
         const data = [
           // invalid length

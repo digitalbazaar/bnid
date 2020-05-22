@@ -221,7 +221,7 @@ export class IdDecoder {
    *   multibase is true.
    * @param {number} [options.fixedBitLength] - Fixed output bit length. Values
    *   with leading non-zero data will error.
-   * @param {boolean} [options.multibase=false] - Use multibase encoding to
+   * @param {boolean} [options.multibase=true] - Use multibase encoding to
    *   detect the id format.
    *
    * @returns {IdDecoder} - New IdDecoder.
@@ -229,7 +229,7 @@ export class IdDecoder {
   constructor({
     encoding = 'base58',
     fixedBitLength,
-    multibase = false
+    multibase = true
   } = {}) {
     this.encoding = encoding;
     this.fixedBitLength = fixedBitLength;

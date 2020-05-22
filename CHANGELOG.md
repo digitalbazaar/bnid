@@ -2,6 +2,7 @@
 
 ### Changed
 - **BREAKING**: `multibase` now defaults to `true` for `generateId()`;
+- Remove travis-ci testing in favor of GitHub Actions.
 
 ### Added
 - Command line tool `bnid`.

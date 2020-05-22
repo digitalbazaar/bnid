@@ -200,6 +200,24 @@ Options:
 
 Decode id string into bytes.
 
+### `minEncodedIdBytes(options)`
+
+Minimum number of bytes needed to encode an id of a given bit length.
+
+Options:
+- `encoding`: Encoding. (default: `base58`)
+- `bitLength`: Number of id bits. (default: 128)
+- `multibase`: Account for multibase encoding. (default: true)
+
+### `maxEncodedIdBytes(options)`
+
+Maximum number of bytes needed to encode an id of a given bit length.
+
+Options:
+- `encoding`: Encoding. (default: `base58`)
+- `bitLength`: Number of id bits. (default: 128)
+- `multibase`: Account for multibase encoding. (default: true)
+
 ## CLI
 
 A command line interface tool called `bnid` is provided to generate and encode

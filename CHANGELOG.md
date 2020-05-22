@@ -1,5 +1,7 @@
 # bnid ChangeLog
 
+## 2.0.0 - 2020-05-22
+
 ### Changed
 - **BREAKING**: `multibase` now defaults to `true` for all APIs.
 - Remove travis-ci testing in favor of GitHub Actions.

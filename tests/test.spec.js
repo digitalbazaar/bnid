@@ -15,10 +15,70 @@ import {
   IdDecoder,
   IdGenerator,
   generateId,
-  decodeId
+  decodeId,
+  minEncodedIdBytes,
+  maxEncodedIdBytes
 } from '..';
 
 describe('bnid', () => {
+  describe('utilities', () => {
+    it('should calculate min/max of encoded bytes', async () => {
+      // [
+      //   [
+      //     [encoding, ...],
+      //     [minBytes, ...],
+      //     [maxBytes, ...]
+      //   ],
+      //   ...
+      // ]
+      // multiple encoding aliases can be listed
+      // all checked for same bit lengths
+      // all checked for multibase extra byte
+      const bitLengths = [8, 16, 32, 64, 128, 256];
+      const data = [
+        [
+          ['hex', 'base16', 'base16upper'],
+          [2, 4, 8, 16, 32, 64],
+          [2, 4, 8, 16, 32, 64]
+        ],
+        [
+          ['base58', 'base58btc'],
+          [1, 2, 4, 8, 16, 32],
+          [2, 3, 6, 11, 22, 44]
+        ]
+      ];
+      function t({name, f, encoding, bitLength, multibase, expected}) {
+        const result = f({encoding, bitLength, multibase});
+        result.should.equal(
+          expected,
+          JSON.stringify({name, encoding, bitLength, multibase, expected})
+        );
+      }
+      for(const [encodings, minBytes, maxBytes] of data) {
+        for(const encoding of encodings) {
+          for(const [i, bitLength] of bitLengths.entries()) {
+            t({
+              name: 'min', f: minEncodedIdBytes, encoding, bitLength,
+              multibase: false, expected: minBytes[i]
+            });
+            t({
+              name: 'min', f: minEncodedIdBytes, encoding, bitLength,
+              multibase: true, expected: minBytes[i] + 1
+            });
+            t({
+              name: 'max', f: maxEncodedIdBytes, encoding, bitLength,
+              multibase: false, expected: maxBytes[i]
+            });
+            t({
+              name: 'max', f: maxEncodedIdBytes, encoding, bitLength,
+              multibase: true, expected: maxBytes[i] + 1
+            });
+          }
+        }
+      }
+    });
+  });
+
   describe('IdGenerator', () => {
     it('should create IdGenerator', async () => {
       const d = new IdGenerator();
@@ -564,6 +624,9 @@ describe('bnid', () => {
           [[0xff, 0xff], 'zLUv'],
           [[0x00, 0x00, 0x00], 'z111'],
           [[0x00, 0x00, 0x01], 'z112'],
+          [[0xff, 0xff, 0xff], 'z2UzHL'],
+          [[0x00, 0x00, 0x00, 0x00], 'z1111'],
+          [[0xff, 0xff, 0xff, 0xff], 'z7YXq9G'],
         ];
         for(const [expected, input] of data) {
           const decoded = d.decode(input);
@@ -606,8 +669,8 @@ describe('bnid', () => {
       should.exist(id);
       id.should.be.a('string');
       // not fixed length, so could be 'z' + 21 or 22 chars
-      id.length.should.be.gte(1 + 22);
-      id.length.should.be.lte(1 + 23);
+      id.length.should.be.gte(minEncodedIdBytes(), id);
+      id.length.should.be.lte(maxEncodedIdBytes(), id);
       id[0].should.equal('z');
     });
     it('should generate default non-multibase id', async () => {
@@ -627,7 +690,7 @@ describe('bnid', () => {
       });
       should.exist(id);
       id.should.be.a('string');
-      id.length.should.equal(1 + 22);
+      id.length.should.equal(maxEncodedIdBytes());
       id[0].should.equal('z');
     });
     it('should generate 256 bit fixed length id', async () => {

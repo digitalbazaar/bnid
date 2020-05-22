@@ -323,3 +323,67 @@ export async function generateId(options) {
 export function decodeId(options) {
   return new IdDecoder(options).decode(options.id);
 }
+
+/**
+ * Minimum number of bytes needed to encode an id of a given bit length.
+ *
+ * @param {object} options - The options to use.
+ * @param {string} [options.encoding='base58'] - Encoding format.
+ * @param {number} [options.bitLength=128] - Number of id bits.
+ * @param {boolean} [options.multibase=true] - Account for multibase encoding.
+ *
+ * @returns {number} - The minimum number of encoded bytes.
+ */
+export function minEncodedIdBytes({
+  encoding = 'base58',
+  bitLength = 128,
+  multibase = true
+} = {}) {
+  let plainBytes;
+  switch(encoding) {
+    case 'hex':
+    case 'base16':
+    case 'base16upper':
+      plainBytes = bitLength / 4;
+      break;
+    case 'base58':
+    case 'base58btc':
+      plainBytes = bitLength / 8;
+      break;
+    default:
+      throw new Error(`Unknown encoding type: "${encoding}".`);
+  }
+  return plainBytes + (multibase ? 1 : 0);
+}
+
+/**
+ * Maximum number of bytes needed to encode an id of a given bit length.
+ *
+ * @param {object} options - The options to use.
+ * @param {string} [options.encoding='base58'] - Encoding format.
+ * @param {number} [options.bitLength=128] - Number of id bits.
+ * @param {boolean} [options.multibase=true] - Account for multibase encoding.
+ *
+ * @returns {number} - The maximum number of encoded bytes.
+ */
+export function maxEncodedIdBytes({
+  encoding = 'base58',
+  bitLength = 128,
+  multibase = true
+} = {}) {
+  let plainBytes;
+  switch(encoding) {
+    case 'hex':
+    case 'base16':
+    case 'base16upper':
+      plainBytes = bitLength / 4;
+      break;
+    case 'base58':
+    case 'base58btc':
+      plainBytes = Math.ceil(bitLength / Math.log2(58));
+      break;
+    default:
+      throw new Error(`Unknown encoding type: "${encoding}".`);
+  }
+  return plainBytes + (multibase ? 1 : 0);
+}

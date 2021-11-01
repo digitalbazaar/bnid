@@ -222,9 +222,28 @@ Options:
 
 Generates a string multibase seed.
 
+```js
+import {generateMultibaseSeed} from 'bnid';
+const seedMultibase = await generateMultibaseSeed();
+// Example seedMultibase: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
+```
+
 ### `decodeMultibaseSeed({seedMultibase})`
 
 Decodes a multibase seed into a 32-bytes array seed bytes.
+
+```js
+import {decodeMultibaseSeed} from 'bnid';
+const seedMultibase = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
+decoded = decodeMultibaseSeed({seedMultibase});
+// Example decoded:
+// Uint8Array(32) [
+//    80, 174,  15, 131, 124,  59,   9,  51,
+//   145, 129,  92, 157, 157, 172, 161,  79,
+//    74,  61, 152, 152,  48, 151,  20,  89,
+//   225, 169,  71,  34,  49,  61,  21, 215
+// ]
+```
 
 ## CLI
 

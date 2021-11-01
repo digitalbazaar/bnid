@@ -17,7 +17,9 @@ import {
   generateId,
   decodeId,
   minEncodedIdBytes,
-  maxEncodedIdBytes
+  maxEncodedIdBytes,
+  generateMultibaseSeed,
+  decodeMultibaseSeed
 } from '..';
 
 describe('bnid', () => {
@@ -803,6 +805,35 @@ describe('bnid', () => {
         });
         decoded.should.equalBytes(expected);
       }
+    });
+  });
+  describe('Multibase seed', () => {
+    it('should generate a multibase seed', async () => {
+      let seedMultibase;
+      let err;
+      try {
+        seedMultibase = await generateMultibaseSeed();
+      } catch(e) {
+        err = e;
+      }
+      should.exist(seedMultibase);
+      should.not.exist(err);
+      seedMultibase.should.be.a('string');
+      seedMultibase.length.should.equal(47);
+    });
+    it('should decode multibase seed', async () => {
+      const seedMultibase = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
+      let decoded;
+      let err;
+      try {
+        decoded = decodeMultibaseSeed({seedMultibase});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(decoded);
+      should.not.exist(err);
+      decoded.should.be.a('Uint8Array');
+      decoded.byteLength.should.equal(32);
     });
   });
 });

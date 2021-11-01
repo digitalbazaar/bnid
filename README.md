@@ -218,6 +218,14 @@ Options:
 - `bitLength`: Number of id bits. (default: 128)
 - `multibase`: Account for multibase encoding. (default: true)
 
+### `generateMultibaseSeed()`
+
+Generates a string multibase seed.
+
+### `decodeMultibaseSeed({seedMultibase})`
+
+Decodes a multibase seed into a 32-bytes array seed bytes.
+
 ## CLI
 
 A command line interface tool called `bnid` is provided to generate and encode

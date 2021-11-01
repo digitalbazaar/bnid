@@ -437,7 +437,7 @@ export async function generateMultibaseSeed() {
  * @param {object} options - The options to use.
  * @param {string} [options.seedMultibase] - The multibase seed to use.
  *
- * @returns {Uint8Array} - A 32-bytes array seed.
+ * @returns {Uint8Array} - A 32-bytes array seed bytes.
  */
 export function decodeMultibaseSeed({seedMultibase}) {
   const prefix = seedMultibase[0];

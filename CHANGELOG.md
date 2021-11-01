@@ -1,5 +1,10 @@
 # bnid ChangeLog
 
+## 2.1.0 - 2021-TBD
+
+### Added
+- Add `generateMultibaseSeed()` and `decodeMultibaseSeed()`.
+
 ## 2.0.0 - 2020-05-22
 
 ### Changed

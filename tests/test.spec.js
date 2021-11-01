@@ -823,6 +823,12 @@ describe('bnid', () => {
     });
     it('should decode multibase seed', async () => {
       const seedMultibase = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
+      const expected = new Uint8Array([
+        80, 174, 15, 131, 124, 59, 9, 51,
+        145, 129, 92, 157, 157, 172, 161, 79,
+        74, 61, 152, 152, 48, 151, 20, 89,
+        225, 169, 71, 34, 49, 61, 21, 215
+      ]);
       let decoded;
       let err;
       try {
@@ -833,6 +839,7 @@ describe('bnid', () => {
       should.exist(decoded);
       should.not.exist(err);
       decoded.should.be.a('Uint8Array');
+      decoded.should.eql(expected);
       decoded.byteLength.should.equal(32);
     });
   });

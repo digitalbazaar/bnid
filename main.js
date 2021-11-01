@@ -13,7 +13,7 @@ import {
 
 // multibase base58-btc header
 const MULTIBASE_BASE58BTC_HEADER = 'z';
-// multihash identity function cdoe
+// multihash identity function code
 const MULTIHASH_IDENTITY_FUNCTION_CODE = 0x00;
 // seed byte size
 const SEED_BYTE_SIZE = 32;

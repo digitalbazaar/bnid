@@ -11,13 +11,10 @@ import {
   bytesFromHex
 } from './util.js';
 
-// multibase base58-btc header
-const MULTIBASE_BASE58BTC_HEADER = 'z';
 // multihash identity function code
 const MULTIHASH_IDENTITY_FUNCTION_CODE = 0x00;
-// seed byte size
-const SEED_BYTE_SIZE = 32;
-const SEED_BITS_SIZE = SEED_BYTE_SIZE * 8;
+// key seed byte size
+const KEY_SEED_BYTE_SIZE = 32;
 
 function _calcOptionsBitLength({
   defaultLength,
@@ -161,6 +158,7 @@ export class IdEncoder {
    * @param {number} [options.fixedBitLength] - Fixed output bit length or 0 to
    *   base on input byte size.
    * @param {boolean} [options.multibase=true] - Use multibase encoding.
+   * @param {boolean} [options.multihash=false] - Use multihash encoding.
    *
    * @returns {IdEncoder} - New IdEncoder.
    */
@@ -168,7 +166,8 @@ export class IdEncoder {
     encoding = 'base58',
     fixedLength = false,
     fixedBitLength,
-    multibase = true
+    multibase = true,
+    multihash = false,
   } = {}) {
     switch(encoding) {
       case 'hex':
@@ -198,6 +197,7 @@ export class IdEncoder {
     }
     this.encoding = encoding;
     this.multibase = multibase;
+    this.multihash = multihash;
   }
 
   /**
@@ -208,6 +208,19 @@ export class IdEncoder {
    * @returns {string} - Encoded string.
    */
   encode(bytes) {
+    if(this.multihash) {
+      const BYTE_SIZE = bytes.length;
+      // <varint hash fn code> <varint digest size in bytes> <hash fn output>
+      //  <identity function>              <32>                <seed bytes>
+      const seedMultihash = new Uint8Array(2 + BYTE_SIZE);
+      // <varint hash fn code>: identity function
+      seedMultihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
+      // <varint digest size in bytes>: 32
+      seedMultihash.set([BYTE_SIZE], 1);
+      // <hash fn output>: seed bytes
+      seedMultihash.set(bytes, 2);
+      bytes = seedMultihash;
+    }
     const encoded = this.encoder({bytes, idEncoder: this});
     if(this.multibase) {
       return this.multibasePrefix + encoded;
@@ -231,17 +244,21 @@ export class IdDecoder {
    *   with leading non-zero data will error.
    * @param {boolean} [options.multibase=true] - Use multibase encoding to
    *   detect the id format.
+   *  @param {boolean} [options.multihash=false] - Use multihash encoding to
+   *   detect the id format.
    *
    * @returns {IdDecoder} - New IdDecoder.
    */
   constructor({
     encoding = 'base58',
     fixedBitLength,
-    multibase = true
+    multibase = true,
+    multihash = false
   } = {}) {
     this.encoding = encoding;
     this.fixedBitLength = fixedBitLength;
     this.multibase = multibase;
+    this.multihash = multihash;
   }
 
   /**
@@ -301,6 +318,25 @@ export class IdDecoder {
         bytes: decoded,
         bitLength: this.fixedBitLength
       });
+    }
+    if(this.multihash) {
+      // <varint hash fn code>: identity function
+      const [hashFnCode] = decoded.slice(0, 1);
+      if(hashFnCode !== MULTIHASH_IDENTITY_FUNCTION_CODE) {
+        throw new Error('Invalid multihash function code.');
+      }
+      // <varint digest size in bytes>: 32
+      const [digestSize] = decoded.slice(1, 2);
+
+      if(digestSize !== KEY_SEED_BYTE_SIZE) {
+        throw new Error('Invalid digest size.');
+      }
+      const keySeedBytes = decoded.slice(2, decoded.length);
+      if(keySeedBytes.byteLength !== KEY_SEED_BYTE_SIZE) {
+        throw new Error(
+          `Invalid seed length. Seed must be "${KEY_SEED_BYTE_SIZE}" bytes.`);
+      }
+      decoded = keySeedBytes;
     }
     return decoded;
   }
@@ -397,73 +433,41 @@ export function maxEncodedIdBytes({
 }
 
 /**
- * Generates a multibase seed.
+ * Generates a key seed.
  *
- * @returns {string} - A multibase seed.
+ * @param {object} [options] - The options to use.
+ * @param {string} [options.encoding='base58'] - Encoding format.
+ * @param {number} [options.bitLength=32 * 8] - Number of bits to generate.
+ * @param {boolean} [options.multibase=true] - Use multibase encoding.
+ * @param {boolean} [options.multihash=true] - Use multihash encoding.
+
+ * @returns {string} - Encoded string id.
  */
-export async function generateMultibaseSeed() {
-  // 256 bit (32 byte) random id generator
-  const generator = new IdGenerator({
-    bitLength: SEED_BITS_SIZE
-  });
-    // generate a random seed
-  const seedBytes = await generator.generate();
-  if(seedBytes.length !== SEED_BYTE_SIZE) {
-    throw new Error('Generated seed does not match expected byte size.', {
-      generatedSize: seedBytes.byteLength,
-      expectedSize: SEED_BYTE_SIZE
-    });
-  }
-
-  // <varint hash fn code> <varint digest size in bytes> <hash fn output>
-  //  <identity function>              <32>                <seed bytes>
-  const seedMultihash = new Uint8Array(2 + SEED_BYTE_SIZE);
-  // <varint hash fn code>: identity function
-  seedMultihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
-  // <varint digest size in bytes>: 32
-  seedMultihash.set([SEED_BYTE_SIZE], 1);
-  // <hash fn output>: seed bytes
-  seedMultihash.set(seedBytes, 2);
-
-  const seedMultibase = MULTIBASE_BASE58BTC_HEADER +
-      base58encoder(seedMultihash);
-
-  return seedMultibase;
+export async function generateKeySeed({
+  bitLength = 32 * 8,
+  encoding = 'base58',
+  multibase = true,
+  multihash = true
+} = {}) {
+  return generateId({bitLength, encoding, multibase, multihash});
 }
 
 /**
- * Decodes a multibase seed.
+ * Decodes a key seed.
  *
  * @param {object} options - The options to use.
- * @param {string} [options.seedMultibase] - The multibase seed to use.
+ * @param {boolean} [options.multibase=true] - Use multibase encoding to detect
+ *   the id format.
+ * @param {boolean} [options.multihash=true] - Use multihash encoding to detect
+ *   the id format.
+ * @param {string} options.id - The key seed id to be decoded.
  *
  * @returns {Uint8Array} - A 32-bytes array seed bytes.
  */
-export function decodeMultibaseSeed({seedMultibase}) {
-  const prefix = seedMultibase[0];
-  if(prefix !== MULTIBASE_BASE58BTC_HEADER) {
-    throw new Error('Unsupported multibase encoding.');
-  }
-  const data = seedMultibase.substring(1);
-  // <varint hash fn code> <varint digest size in bytes> <hash fn output>
-  //  <identity function>              <32>                <seed bytes>
-  const seedMultihash = base58decoder(data);
-  // <varint hash fn code>: identity function
-  const [hashFnCode] = seedMultihash.slice(0, 1);
-  if(hashFnCode !== MULTIHASH_IDENTITY_FUNCTION_CODE) {
-    throw new Error('Invalid multihash function code.');
-  }
-  // <varint digest size in bytes>: 32
-  const [digestSize] = seedMultihash.slice(1, 2);
-  if(digestSize !== SEED_BYTE_SIZE) {
-    throw new Error('Invalid digest size.');
-  }
-  // <hash fn output>: seed bytes
-  const seedBytes = seedMultihash.slice(2, seedMultihash.length);
-  if(seedBytes.byteLength !== SEED_BYTE_SIZE) {
-    throw new Error(
-      `Invalid seed length. Seed must be "${SEED_BYTE_SIZE}" bytes.`);
-  }
-
-  return seedBytes;
+export function decodeKeySeed({
+  multibase = true,
+  multihash = true,
+  id
+}) {
+  return decodeId({multihash, multibase, id});
 }

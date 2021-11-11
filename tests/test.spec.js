@@ -18,8 +18,8 @@ import {
   decodeId,
   minEncodedIdBytes,
   maxEncodedIdBytes,
-  generateMultibaseSeed,
-  decodeMultibaseSeed
+  generateKeySeed,
+  decodeKeySeed,
 } from '..';
 
 describe('bnid', () => {
@@ -807,22 +807,22 @@ describe('bnid', () => {
       }
     });
   });
-  describe('Multibase seed', () => {
+  describe('key seed', () => {
     it('should generate a multibase seed', async () => {
-      let seedMultibase;
+      let keySeed;
       let err;
       try {
-        seedMultibase = await generateMultibaseSeed();
+        keySeed = await generateKeySeed();
       } catch(e) {
         err = e;
       }
-      should.exist(seedMultibase);
+      should.exist(keySeed);
       should.not.exist(err);
-      seedMultibase.should.be.a('string');
-      seedMultibase.length.should.equal(47);
+      keySeed.should.be.a('string');
+      keySeed.length.should.equal(47);
     });
     it('should decode multibase seed', async () => {
-      const seedMultibase = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
+      const keySeed = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
       const expected = new Uint8Array([
         80, 174, 15, 131, 124, 59, 9, 51,
         145, 129, 92, 157, 157, 172, 161, 79,
@@ -832,7 +832,7 @@ describe('bnid', () => {
       let decoded;
       let err;
       try {
-        decoded = decodeMultibaseSeed({seedMultibase});
+        decoded = decodeKeySeed({id: keySeed});
       } catch(e) {
         err = e;
       }

@@ -808,7 +808,7 @@ describe('bnid', () => {
     });
   });
   describe('key seed', () => {
-    it('should generate a multibase seed', async () => {
+    it('should generate a key seed', async () => {
       let keySeed;
       let err;
       try {
@@ -821,7 +821,7 @@ describe('bnid', () => {
       keySeed.should.be.a('string');
       keySeed.length.should.equal(47);
     });
-    it('should decode multibase seed', async () => {
+    it('should decode key seed', async () => {
       const keySeed = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
       const expected = new Uint8Array([
         80, 174, 15, 131, 124, 59, 9, 51,

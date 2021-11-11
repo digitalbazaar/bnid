@@ -3,7 +3,8 @@
 ## 2.1.0 - 2021-TBD
 
 ### Added
-- Add `generateMultibaseSeed()` and `decodeMultibaseSeed()`.
+- Add `generateKeySeed()` and `decodeKeySeed()`.
+- Add `multihash` boolean parameter to IdEncoder and IdDecoder.
 
 ## 2.0.0 - 2020-05-22
 

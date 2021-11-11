@@ -218,24 +218,32 @@ Options:
 - `bitLength`: Number of id bits. (default: 128)
 - `multibase`: Account for multibase encoding. (default: true)
 
-### `generateMultibaseSeed()`
+### `generateKeySeed(options)`
 
-Generates a string multibase seed.
+`generateKeySeed()` and `decodeKeySeed()` methods are for creating  and
+decoding app ids.
+
+`generateKeySeed()` generates a string key seed ID.
 
 ```js
-import {generateMultibaseSeed} from 'bnid';
-const seedMultibase = await generateMultibaseSeed();
-// Example seedMultibase: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
+import {generateKeySeed} from 'bnid';
+const keySeed = await generateKeySeed();
+// Example keySeed: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
 ```
+Options:
+- `encoding`: Encoding. (default: `base58`)
+- `bitLength`: Number of id bits. (default: 32 * 8)
+- `multibase`: Account for multibase encoding. (default: true)
+- `multihash`: Account for multihash encoding. (default: true)
 
-### `decodeMultibaseSeed({seedMultibase})`
+### `decodeKeySeed(options)`
 
-Decodes a multibase seed into a 32-bytes array seed bytes.
+Decodes a key seed ID into a 32-bytes array seed bytes.
 
 ```js
-import {decodeMultibaseSeed} from 'bnid';
-const seedMultibase = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
-decoded = decodeMultibaseSeed({seedMultibase});
+import {decodeKeySeed} from 'bnid';
+const keySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
+decoded = decodeKeySeed({id: keySeed});
 // Example decoded:
 // Uint8Array(32) [
 //    80, 174,  15, 131, 124,  59,   9,  51,
@@ -244,6 +252,10 @@ decoded = decodeMultibaseSeed({seedMultibase});
 //   225, 169,  71,  34,  49,  61,  21, 215
 // ]
 ```
+Options:
+- `id`: The key seed id to be decoded.
+- `multibase`: Account for multibase encoding. (default: true)
+- `multihash`: Account for multihash encoding. (default: true)
 
 ## CLI
 

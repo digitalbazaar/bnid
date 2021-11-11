@@ -244,21 +244,23 @@ export class IdDecoder {
    *   with leading non-zero data will error.
    * @param {boolean} [options.multibase=true] - Use multibase encoding to
    *   detect the id format.
-   *  @param {boolean} [options.multihash=false] - Use multihash encoding to
+   * @param {boolean} [options.multihash=false] - Use multihash encoding to
    *   detect the id format.
-   *
+   * @param {number} [options.expectedSize=32] - Optional expected digest size.
    * @returns {IdDecoder} - New IdDecoder.
    */
   constructor({
     encoding = 'base58',
     fixedBitLength,
     multibase = true,
-    multihash = false
+    multihash = false,
+    expectedSize = 32
   } = {}) {
     this.encoding = encoding;
     this.fixedBitLength = fixedBitLength;
     this.multibase = multibase;
     this.multihash = multihash;
+    this.expectedSize = expectedSize;
   }
 
   /**
@@ -328,7 +330,7 @@ export class IdDecoder {
       // <varint digest size in bytes>: 32
       const [digestSize] = decoded.slice(1, 2);
 
-      if(digestSize !== KEY_SEED_BYTE_SIZE) {
+      if(digestSize !== this.expectedSize) {
         throw new Error('Invalid digest size.');
       }
       const keySeedBytes = decoded.slice(2, decoded.length);
@@ -460,6 +462,7 @@ export async function generateKeySeed({
  *   the id format.
  * @param {boolean} [options.multihash=true] - Use multihash encoding to detect
  *   the id format.
+ * @param {number} [options.expectedSize] - Expected digest size.
  * @param {string} options.id - The key seed id to be decoded.
  *
  * @returns {Uint8Array} - A 32-bytes array seed bytes.
@@ -467,7 +470,8 @@ export async function generateKeySeed({
 export function decodeKeySeed({
   multibase = true,
   multihash = true,
-  id
+  expectedSize = 32,
+  id,
 }) {
-  return decodeId({multihash, multibase, id});
+  return decodeId({multihash, multibase, expectedSize, id});
 }

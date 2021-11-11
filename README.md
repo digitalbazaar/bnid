@@ -177,6 +177,7 @@ Options:
 - `fixedBitLength`: fixed output bit length or 0 to base on input byte size.
   (default: 0)
 - `multibase`: `true` to use multibase encoding. (default: `true`)
+- `multihash`: `true` to use multihash encoding. (default: `false`)
 
 #### `encode(bytes)`
 
@@ -184,7 +185,7 @@ Encode id bytes into a string.
 
 ### `IdDecoder`
 
-An `IdEncoder` encodes an array of id bytes into a specific encoding.
+An `IdDecoder` decodes a specific encoding into array of id bytes.
 
 #### `constuctor(options)`
 
@@ -194,7 +195,9 @@ Options:
   - Same options as for `IdEncoder`.
 - `fixedBitLength`: fixed output bit length.  (default: none)
 - `multibase`: `true` to use multibase encoding to detect id format. (default:
-  `false`)
+  `true`)
+- `multihash`: `true` to use multihash encoding. (default: `false`)
+- `expectedSize`: Expected digest size. (default: 32)
 
 #### `decode(id)`
 
@@ -221,7 +224,7 @@ Options:
 ### `generateKeySeed(options)`
 
 `generateKeySeed()` and `decodeKeySeed()` methods are for creating  and
-decoding app ids.
+decoding key pair seeds which will be used for auto-generating app ids.
 
 `generateKeySeed()` generates a string key seed ID.
 
@@ -256,6 +259,7 @@ Options:
 - `id`: The key seed id to be decoded.
 - `multibase`: Account for multibase encoding. (default: true)
 - `multihash`: Account for multihash encoding. (default: true)
+- `expectedSize`: Expected digest size. (default: 32)
 
 ## CLI
 

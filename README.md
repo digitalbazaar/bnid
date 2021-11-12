@@ -221,16 +221,16 @@ Options:
 - `bitLength`: Number of id bits. (default: 128)
 - `multibase`: Account for multibase encoding. (default: true)
 
-### `generateKeySeed(options)`
+### `generateSecretKeySeed(options)`
 
-`generateKeySeed()` and `decodeKeySeed()` methods are for creating  and
+`generateSecretKeySeed()` and `decodeSecretKeySeed()` methods are for creating  and
 decoding key pair seeds which will be used for auto-generating app ids.
 
-`generateKeySeed()` generates a string key seed ID.
+`generateSecretKeySeed()` generates a string key seed ID.
 
 ```js
-import {generateKeySeed} from 'bnid';
-const keySeed = await generateKeySeed();
+import {generateSecretKeySeed} from 'bnid';
+const keySeed = await generateSecretKeySeed();
 // Example keySeed: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
 ```
 Options:
@@ -239,14 +239,14 @@ Options:
 - `multibase`: Account for multibase encoding. (default: true)
 - `multihash`: Account for multihash encoding. (default: true)
 
-### `decodeKeySeed(options)`
+### `decodeSecretKeySeed(options)`
 
 Decodes a key seed ID into a 32-bytes array seed bytes.
 
 ```js
-import {decodeKeySeed} from 'bnid';
+import {decodeSecretKeySeed} from 'bnid';
 const keySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
-decoded = decodeKeySeed({id: keySeed});
+decoded = decodeSecretKeySeed({id: keySeed});
 // Example decoded:
 // Uint8Array(32) [
 //    80, 174,  15, 131, 124,  59,   9,  51,

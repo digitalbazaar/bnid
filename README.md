@@ -249,7 +249,7 @@ Decodes an encoded secret key seed into an array of secret key seed bytes
 ```js
 import {decodeSecretKeySeed} from 'bnid';
 const secretKeySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
-decoded = decodeSecretKeySeed({id: secretKeySeed});
+decoded = decodeSecretKeySeed({secretKeySeed});
 // Example decoded:
 // Uint8Array(32) [
 //    80, 174,  15, 131, 124,  59,   9,  51,

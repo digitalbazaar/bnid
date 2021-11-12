@@ -435,7 +435,9 @@ export function maxEncodedIdBytes({
 }
 
 /**
- * Generates a key seed.
+ * Generates a secret key seed encoded as a string that can be stored and later
+ * used to generate a key pair. The public key from the key pair can be used as
+ * an identifier.
  *
  * @param {object} [options] - The options to use.
  * @param {string} [options.encoding='base58'] - Encoding format.
@@ -443,7 +445,7 @@ export function maxEncodedIdBytes({
  * @param {boolean} [options.multibase=true] - Use multibase encoding.
  * @param {boolean} [options.multihash=true] - Use multihash encoding.
 
- * @returns {string} - Encoded string id.
+ * @returns {string} - Secret key seed encoded as a string.
  */
 export async function generateSecretKeySeed({
   bitLength = 32 * 8,
@@ -455,7 +457,7 @@ export async function generateSecretKeySeed({
 }
 
 /**
- * Decodes a key seed.
+ * Decodes an encoded secret key seed into an array of secret key seed bytes.
  *
  * @param {object} options - The options to use.
  * @param {boolean} [options.multibase=true] - Use multibase encoding to detect
@@ -465,7 +467,8 @@ export async function generateSecretKeySeed({
  * @param {number} [options.expectedSize] - Expected digest size.
  * @param {string} options.id - The key seed id to be decoded.
  *
- * @returns {Uint8Array} - A 32-bytes array seed bytes.
+ * @returns {Uint8Array} - An array of secret key seed bytes (default size:
+ *   32 bytes).
  */
 export function decodeSecretKeySeed({
   multibase = true,

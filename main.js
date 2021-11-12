@@ -210,14 +210,14 @@ export class IdEncoder {
       const BYTE_SIZE = bytes.length;
       // <varint hash fn code> <varint digest size in bytes> <hash fn output>
       //  <identity function>             <byte size>                <raw bytes>
-      const seedMultihash = new Uint8Array(2 + BYTE_SIZE);
+      const multihash = new Uint8Array(2 + BYTE_SIZE);
       // <varint hash fn code>: identity function
-      seedMultihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
+      multihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
       // <varint digest size in bytes>: 32
-      seedMultihash.set([BYTE_SIZE], 1);
+      multihash.set([BYTE_SIZE], 1);
       // <hash fn output>: seed bytes
-      seedMultihash.set(bytes, 2);
-      bytes = seedMultihash;
+      multihash.set(bytes, 2);
+      bytes = multihash;
     }
     const encoded = this.encoder({bytes, idEncoder: this});
     if(this.multibase) {
@@ -333,12 +333,13 @@ export class IdDecoder {
         throw new Error('Invalid digest size.');
       }
 
-      const secretKeySeedBytes = decoded.subarray(2);
-      if(secretKeySeedBytes.byteLength !== this.expectedSize) {
+      const secretKeyBytes = decoded.subarray(2);
+      if(secretKeyBytes.byteLength !== this.expectedSize) {
         throw new Error(
-          `Invalid seed length. Seed must be "${this.expectedSize}" bytes.`);
+          `Invalid secret key length. Secret key must be ` +
+          `"${this.expectedSize}" bytes.`);
       }
-      decoded = secretKeySeedBytes;
+      decoded = secretKeyBytes;
     }
     return decoded;
   }

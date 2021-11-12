@@ -259,7 +259,7 @@ decoded = decodeSecretKeySeed({id: secretKeySeed});
 // ]
 ```
 Options:
-- `id`: The key seed id to be decoded.
+- `secretKeySeed`: The secret key seed to be decoded.
 - `multibase`: Account for multibase encoding. (default: true)
 - `multihash`: Account for multihash encoding. (default: true)
 - `expectedSize`: Expected digest size. (default: 32)

@@ -807,22 +807,22 @@ describe('bnid', () => {
       }
     });
   });
-  describe('key seed', () => {
-    it('should generate a key seed', async () => {
-      let keySeed;
+  describe('secret key seed', () => {
+    it('should generate a secret key seed', async () => {
+      let secretKeySeed;
       let err;
       try {
-        keySeed = await generateSecretKeySeed();
+        secretKeySeed = await generateSecretKeySeed();
       } catch(e) {
         err = e;
       }
-      should.exist(keySeed);
+      should.exist(secretKeySeed);
       should.not.exist(err);
-      keySeed.should.be.a('string');
-      keySeed.length.should.equal(47);
+      secretKeySeed.should.be.a('string');
+      secretKeySeed.length.should.equal(47);
     });
-    it('should decode key seed', async () => {
-      const keySeed = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
+    it('should decode secret key seed', async () => {
+      const secretKeySeed = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
       const expected = new Uint8Array([
         80, 174, 15, 131, 124, 59, 9, 51,
         145, 129, 92, 157, 157, 172, 161, 79,
@@ -832,7 +832,7 @@ describe('bnid', () => {
       let decoded;
       let err;
       try {
-        decoded = decodeSecretKeySeed({id: keySeed});
+        decoded = decodeSecretKeySeed({secretKeySeed});
       } catch(e) {
         err = e;
       }

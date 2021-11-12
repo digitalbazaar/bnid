@@ -465,7 +465,7 @@ export async function generateSecretKeySeed({
  * @param {boolean} [options.multihash=true] - Use multihash encoding to detect
  *   the id format.
  * @param {number} [options.expectedSize] - Expected digest size.
- * @param {string} options.id - The key seed id to be decoded.
+ * @param {string} options.secretKeySeed - The secret key seed to be decoded.
  *
  * @returns {Uint8Array} - An array of secret key seed bytes (default size:
  *   32 bytes).
@@ -474,7 +474,7 @@ export function decodeSecretKeySeed({
   multibase = true,
   multihash = true,
   expectedSize = 32,
-  id,
+  secretKeySeed,
 }) {
-  return decodeId({multihash, multibase, expectedSize, id});
+  return decodeId({multihash, multibase, expectedSize, id: secretKeySeed});
 }

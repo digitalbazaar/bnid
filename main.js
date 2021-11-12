@@ -13,8 +13,6 @@ import {
 
 // multihash identity function code
 const MULTIHASH_IDENTITY_FUNCTION_CODE = 0x00;
-// key seed byte size
-const KEY_SEED_BYTE_SIZE = 32;
 
 function _calcOptionsBitLength({
   defaultLength,
@@ -334,9 +332,9 @@ export class IdDecoder {
         throw new Error('Invalid digest size.');
       }
       const keySeedBytes = decoded.slice(2, decoded.length);
-      if(keySeedBytes.byteLength !== KEY_SEED_BYTE_SIZE) {
+      if(keySeedBytes.byteLength !== this.expectedSize) {
         throw new Error(
-          `Invalid seed length. Seed must be "${KEY_SEED_BYTE_SIZE}" bytes.`);
+          `Invalid seed length. Seed must be "${this.expectedSize}" bytes.`);
       }
       decoded = keySeedBytes;
     }

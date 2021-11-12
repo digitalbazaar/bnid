@@ -321,22 +321,24 @@ export class IdDecoder {
     }
     if(this.multihash) {
       // <varint hash fn code>: identity function
-      const [hashFnCode] = decoded.slice(0, 1);
+      const [hashFnCode] = decoded;
+
       if(hashFnCode !== MULTIHASH_IDENTITY_FUNCTION_CODE) {
         throw new Error('Invalid multihash function code.');
       }
       // <varint digest size in bytes>: 32
-      const [digestSize] = decoded.slice(1, 2);
+      const digestSize = decoded[1];
 
       if(digestSize !== this.expectedSize) {
         throw new Error('Invalid digest size.');
       }
-      const keySeedBytes = decoded.slice(2, decoded.length);
-      if(keySeedBytes.byteLength !== this.expectedSize) {
+
+      const secretKeySeedBytes = decoded.subarray(2);
+      if(secretKeySeedBytes.byteLength !== this.expectedSize) {
         throw new Error(
           `Invalid seed length. Seed must be "${this.expectedSize}" bytes.`);
       }
-      decoded = keySeedBytes;
+      decoded = secretKeySeedBytes;
     }
     return decoded;
   }

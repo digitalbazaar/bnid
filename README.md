@@ -223,15 +223,18 @@ Options:
 
 ### `generateSecretKeySeed(options)`
 
-`generateSecretKeySeed()` and `decodeSecretKeySeed()` methods are for creating  and
-decoding key pair seeds which will be used for auto-generating app ids.
+`generateSecretKeySeed()` and `decodeSecretKeySeed()` methods are for creating
+and decoding secret key pair seeds which can be used to generate public key
+based identifiers.
 
-`generateSecretKeySeed()` generates a string key seed ID.
+`generateSecretKeySeed()` generates a secret key seed encoded as a string that
+can be stored and later used to generate a key pair. The public key from
+the key pair can be used as an identifier.
 
 ```js
 import {generateSecretKeySeed} from 'bnid';
-const keySeed = await generateSecretKeySeed();
-// Example keySeed: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
+const secretKeySeed = await generateSecretKeySeed();
+// Example secretKeySeed: z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD
 ```
 Options:
 - `encoding`: Encoding. (default: `base58`)
@@ -241,12 +244,12 @@ Options:
 
 ### `decodeSecretKeySeed(options)`
 
-Decodes a key seed ID into a 32-bytes array seed bytes.
-
+Decodes an encoded secret key seed into an array of secret key seed bytes
+(default size: 32 bytes).
 ```js
 import {decodeSecretKeySeed} from 'bnid';
-const keySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
-decoded = decodeSecretKeySeed({id: keySeed});
+const secretKeySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
+decoded = decodeSecretKeySeed({id: secretKeySeed});
 // Example decoded:
 // Uint8Array(32) [
 //    80, 174,  15, 131, 124,  59,   9,  51,

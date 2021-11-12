@@ -211,7 +211,7 @@ export class IdEncoder {
     if(this.multihash) {
       const BYTE_SIZE = bytes.length;
       // <varint hash fn code> <varint digest size in bytes> <hash fn output>
-      //  <identity function>              <32>                <seed bytes>
+      //  <identity function>             <byte size>                <raw bytes>
       const seedMultihash = new Uint8Array(2 + BYTE_SIZE);
       // <varint hash fn code>: identity function
       seedMultihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);

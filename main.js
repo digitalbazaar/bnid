@@ -445,7 +445,7 @@ export function maxEncodedIdBytes({
 
  * @returns {string} - Encoded string id.
  */
-export async function generateKeySeed({
+export async function generateSecretKeySeed({
   bitLength = 32 * 8,
   encoding = 'base58',
   multibase = true,
@@ -467,7 +467,7 @@ export async function generateKeySeed({
  *
  * @returns {Uint8Array} - A 32-bytes array seed bytes.
  */
-export function decodeKeySeed({
+export function decodeSecretKeySeed({
   multibase = true,
   multihash = true,
   expectedSize = 32,

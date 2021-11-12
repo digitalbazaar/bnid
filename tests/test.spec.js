@@ -18,8 +18,8 @@ import {
   decodeId,
   minEncodedIdBytes,
   maxEncodedIdBytes,
-  generateKeySeed,
-  decodeKeySeed,
+  generateSecretKeySeed,
+  decodeSecretKeySeed,
 } from '..';
 
 describe('bnid', () => {
@@ -812,7 +812,7 @@ describe('bnid', () => {
       let keySeed;
       let err;
       try {
-        keySeed = await generateKeySeed();
+        keySeed = await generateSecretKeySeed();
       } catch(e) {
         err = e;
       }
@@ -832,7 +832,7 @@ describe('bnid', () => {
       let decoded;
       let err;
       try {
-        decoded = decodeKeySeed({id: keySeed});
+        decoded = decodeSecretKeySeed({id: keySeed});
       } catch(e) {
         err = e;
       }

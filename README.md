@@ -185,7 +185,8 @@ Encode id bytes into a string.
 
 ### `IdDecoder`
 
-An `IdDecoder` decodes a specific encoding into array of id bytes.
+An `IdDecoder` decodes a specific encoding into an array of bytes representing
+an ID.
 
 #### `constuctor(options)`
 
@@ -197,7 +198,7 @@ Options:
 - `multibase`: `true` to use multibase encoding to detect id format. (default:
   `true`)
 - `multihash`: `true` to use multihash encoding. (default: `false`)
-- `expectedSize`: Expected digest size. (default: 32)
+- `expectedSize`: Expected size for multihash-encoded ID bytes. (default: 32)
 
 #### `decode(id)`
 
@@ -229,7 +230,8 @@ based identifiers.
 
 `generateSecretKeySeed()` generates a secret key seed encoded as a string that
 can be stored and later used to generate a key pair. The public key from
-the key pair can be used as an identifier.
+the key pair can be used as an identifier. The encoded key seed MUST be kept
+secret.
 
 ```js
 import {generateSecretKeySeed} from 'bnid';
@@ -245,7 +247,9 @@ Options:
 ### `decodeSecretKeySeed(options)`
 
 Decodes an encoded secret key seed into an array of secret key seed bytes
-(default size: 32 bytes).
+(default size: 32 bytes). Both the encoded key seed and the decoded bytes MUST
+be kept secret.
+
 ```js
 import {decodeSecretKeySeed} from 'bnid';
 const secretKeySeed = 'z1Aaj5A4UCsdMpXwdYAReXa4bxWYiKJtdAvB1zMzCHtCbtD';
@@ -262,7 +266,7 @@ Options:
 - `secretKeySeed`: The secret key seed to be decoded.
 - `multibase`: Account for multibase encoding. (default: true)
 - `multihash`: Account for multihash encoding. (default: true)
-- `expectedSize`: Expected digest size. (default: 32)
+- `expectedSize`: Expected size for multihash-encoded ID bytes. (default: 32)
 
 ## CLI
 

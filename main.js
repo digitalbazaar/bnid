@@ -215,7 +215,7 @@ export class IdEncoder {
       multihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
       // <varint digest size in bytes>: 32
       multihash.set([BYTE_SIZE], 1);
-      // <hash fn output>: seed bytes
+      // <hash fn output>: identifier bytes
       multihash.set(bytes, 2);
       bytes = multihash;
     }
@@ -244,7 +244,8 @@ export class IdDecoder {
    *   detect the id format.
    * @param {boolean} [options.multihash=false] - Use multihash encoding to
    *   detect the id format.
-   * @param {number} [options.expectedSize=32] - Optional expected digest size.
+   * @param {number} [options.expectedSize=32] - Optional expected identifier
+   *   size in bytes.
    * @returns {IdDecoder} - New IdDecoder.
    */
   constructor({
@@ -330,16 +331,16 @@ export class IdDecoder {
       const digestSize = decoded[1];
 
       if(digestSize !== this.expectedSize) {
-        throw new Error('Invalid digest size.');
+        throw new Error('Unexpected identifier size.');
       }
 
-      const secretKeyBytes = decoded.subarray(2);
-      if(secretKeyBytes.byteLength !== this.expectedSize) {
+      const bytes = decoded.subarray(2);
+      if(bytes.byteLength !== this.expectedSize) {
         throw new Error(
-          `Invalid secret key length. Secret key must be ` +
+          `Invalid identifier size. Identifier must be ` +
           `"${this.expectedSize}" bytes.`);
       }
-      decoded = secretKeyBytes;
+      decoded = bytes;
     }
     return decoded;
   }
@@ -438,7 +439,7 @@ export function maxEncodedIdBytes({
 /**
  * Generates a secret key seed encoded as a string that can be stored and later
  * used to generate a key pair. The public key from the key pair can be used as
- * an identifier.
+ * an identifier. The key seed (both raw and encoded form) MUST be kept secret.
  *
  * @param {object} [options] - The options to use.
  * @param {string} [options.encoding='base58'] - Encoding format.
@@ -454,18 +455,23 @@ export async function generateSecretKeySeed({
   multibase = true,
   multihash = true
 } = {}) {
+  // reuse `generateId` for convenience, but a key seed is *SECRET* and
+  // not an identifier itself, rather it is used to generate an identifier via
+  // a public key
   return generateId({bitLength, encoding, multibase, multihash});
 }
 
 /**
  * Decodes an encoded secret key seed into an array of secret key seed bytes.
+ * The key seed bytes MUST be kept secret.
  *
  * @param {object} options - The options to use.
  * @param {boolean} [options.multibase=true] - Use multibase encoding to detect
  *   the id format.
  * @param {boolean} [options.multihash=true] - Use multihash encoding to detect
  *   the id format.
- * @param {number} [options.expectedSize] - Expected digest size.
+ * @param {number} [options.expectedSize] - Optional expected identifier size
+ *   in bytes.
  * @param {string} options.secretKeySeed - The secret key seed to be decoded.
  *
  * @returns {Uint8Array} - An array of secret key seed bytes (default size:
@@ -477,5 +483,7 @@ export function decodeSecretKeySeed({
   expectedSize = 32,
   secretKeySeed,
 }) {
+  // reuse `decodeId` for convenience, but key seed bytes are *SECRET* and
+  // are NOT identifiers, they are used to generate identifiers from public keys
   return decodeId({multihash, multibase, expectedSize, id: secretKeySeed});
 }

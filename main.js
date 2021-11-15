@@ -213,7 +213,7 @@ export class IdEncoder {
       const multihash = new Uint8Array(2 + BYTE_SIZE);
       // <varint hash fn code>: identity function
       multihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
-      // <varint digest size in bytes>: 32
+      // <varint digest size in bytes>
       multihash.set([BYTE_SIZE], 1);
       // <hash fn output>: identifier bytes
       multihash.set(bytes, 2);
@@ -458,7 +458,11 @@ export async function generateSecretKeySeed({
   // reuse `generateId` for convenience, but a key seed is *SECRET* and
   // not an identifier itself, rather it is used to generate an identifier via
   // a public key
-  return generateId({bitLength, encoding, multibase, multihash});
+  // Note: Setting fixedLength to false even though that's the (current)
+  // default as not using a fixed length of false for a seed is a security
+  // problem
+  return generateId(
+    {bitLength, encoding, fixedLength: false, multibase, multihash});
 }
 
 /**

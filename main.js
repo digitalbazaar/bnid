@@ -337,7 +337,7 @@ export class IdDecoder {
       const bytes = decoded.subarray(2);
       if(bytes.byteLength !== this.expectedSize) {
         throw new Error(
-          `Invalid identifier size. Identifier must be ` +
+          `Invalid decoded identifier size. Identifier must be ` +
           `"${this.expectedSize}" bytes.`);
       }
       decoded = bytes;

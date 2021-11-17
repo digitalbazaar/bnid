@@ -207,14 +207,14 @@ export class IdEncoder {
    */
   encode(bytes) {
     if(this.multihash) {
-      const BYTE_SIZE = bytes.length;
+      const byteSize = bytes.length;
       // <varint hash fn code> <varint digest size in bytes> <hash fn output>
       //  <identity function>             <byte size>                <raw bytes>
-      const multihash = new Uint8Array(2 + BYTE_SIZE);
+      const multihash = new Uint8Array(2 + byteSize);
       // <varint hash fn code>: identity function
       multihash.set([MULTIHASH_IDENTITY_FUNCTION_CODE]);
       // <varint digest size in bytes>
-      multihash.set([BYTE_SIZE], 1);
+      multihash.set([byteSize], 1);
       // <hash fn output>: identifier bytes
       multihash.set(bytes, 2);
       bytes = multihash;
@@ -327,7 +327,7 @@ export class IdDecoder {
       if(hashFnCode !== MULTIHASH_IDENTITY_FUNCTION_CODE) {
         throw new Error('Invalid multihash function code.');
       }
-      // <varint digest size in bytes>: 32
+      // <varint digest size in bytes>
       const digestSize = decoded[1];
 
       if(digestSize !== this.expectedSize) {

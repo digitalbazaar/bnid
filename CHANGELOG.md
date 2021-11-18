@@ -1,6 +1,6 @@
 # bnid ChangeLog
 
-## 2.1.0 - 2021-TBD
+## 2.1.0 - 2021-11-18
 
 ### Added
 - Add `generateSecretKeySeed()` and `decodeSecretKeySeed()`.

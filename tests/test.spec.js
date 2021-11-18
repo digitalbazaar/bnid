@@ -821,6 +821,21 @@ describe('bnid', () => {
       secretKeySeed.should.be.a('string');
       secretKeySeed.length.should.equal(47);
     });
+    it('should generate a secret key seed with bitLength of 42 * 8',
+      async () => {
+        let secretKeySeed;
+        let err;
+        const bitLength = 42 * 8;
+        try {
+          secretKeySeed = await generateSecretKeySeed({bitLength});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(secretKeySeed);
+        should.not.exist(err);
+        secretKeySeed.should.be.a('string');
+        secretKeySeed.length.should.equal(61);
+      });
     it('should decode secret key seed', async () => {
       const secretKeySeed = 'z1Abn5R8HRLXKJvLQP1AzxFBGX2D1YdCo5d5BvvNw73nMzv';
       const expected = new Uint8Array([
@@ -842,5 +857,60 @@ describe('bnid', () => {
       decoded.should.eql(expected);
       decoded.byteLength.should.equal(32);
     });
+    it('should decode secret key seed with expectedSize of 42',
+      async () => {
+        const secretKeySeed =
+          'z146fHWeH32ZP1cCG3dz2ZemzvZjPcj5ycsFFanAB6X1frDDxmoAocPx5RC3A';
+        const expectedSize = 42;
+        const expected = new Uint8Array([
+          12, 221, 206, 72, 148, 144, 98, 171, 251,
+          157, 183, 76, 211, 255, 124, 101, 204, 77,
+          32, 220, 135, 90, 102, 87, 222, 55, 82,
+          154, 164, 35, 115, 242, 173, 73, 109, 91,
+          252, 206, 191, 108, 215, 105
+        ]);
+        let decoded;
+        let err;
+        try {
+          decoded = decodeSecretKeySeed({secretKeySeed, expectedSize});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(decoded);
+        should.not.exist(err);
+        decoded.should.be.a('Uint8Array');
+        decoded.should.eql(expected);
+        decoded.byteLength.should.equal(42);
+      });
+    it('should throw error if identifier size does not match "expectedSize"',
+      async () => {
+        const secretKeySeed =
+          'z1ehDNc1UiwtuiZ3gFRCxm63JWF8RzcY1TkAtXm8rpC3MAhUPQVaMffvKX9';
+        let decoded;
+        let err;
+        try {
+          decoded = decodeSecretKeySeed({secretKeySeed});
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(decoded);
+        should.exist(err);
+        err.message.should.equal('Unexpected identifier size.');
+      });
+    it('should throw error if multihash function code is invalid.',
+      async () => {
+        const secretKeySeed =
+          'zNy1YDSXV7dD3XzGaj1zVP7ypX3vf66auadQ5FouvcaKjqDXWpB1zNK5KBW1';
+        let decoded;
+        let err;
+        try {
+          decoded = decodeSecretKeySeed({secretKeySeed});
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(decoded);
+        should.exist(err);
+        err.message.should.equal('Invalid multihash function code.');
+      });
   });
 });

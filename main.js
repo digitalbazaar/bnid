@@ -208,6 +208,10 @@ export class IdEncoder {
   encode(bytes) {
     if(this.multihash) {
       const byteSize = bytes.length;
+
+      if(byteSize > 127) {
+        throw new Error(`Identifier size too large.`);
+      }
       // <varint hash fn code> <varint digest size in bytes> <hash fn output>
       //  <identity function>             <byte size>                <raw bytes>
       const multihash = new Uint8Array(2 + byteSize);
@@ -329,6 +333,10 @@ export class IdDecoder {
       }
       // <varint digest size in bytes>
       const digestSize = decoded[1];
+
+      if(digestSize > 127) {
+        throw new Error(`Decoded identifier size too large.`);
+      }
 
       if(digestSize !== this.expectedSize) {
         throw new Error('Unexpected identifier size.');

@@ -912,5 +912,36 @@ describe('bnid', () => {
         should.exist(err);
         err.message.should.equal('Invalid multihash function code.');
       });
+    it('should throw error if identifier size is greater than 127',
+      async () => {
+        let secretKeySeed;
+        let err;
+        const bitLength = 128 * 8;
+        try {
+          secretKeySeed = await generateSecretKeySeed({bitLength});
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(secretKeySeed);
+        should.exist(err);
+        err.message.should.equal('Identifier size too large.');
+      });
+    it('should throw error if decoded identifier size is greater than 127',
+      async () => {
+        const secretKeySeed =
+          'z1219W7SyWvDy6ueLyvNirtibEkZdHpfP5BNTQG5Pv8tFKaqqnAkS7d7Pi5XeNEL' +
+          '6MyCyjqURq33GYgFJPb8pjM6QmmZGY2hK53wos9XBCtcPswJPd583teDaZX9b2gn' +
+          'aAfCqyY1gJ2fymS1uXUkmoBRYA5TM9LHxk5fsRiiy3Zqtp9UfHH';
+        let decoded;
+        let err;
+        try {
+          decoded = decodeSecretKeySeed({secretKeySeed});
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(decoded);
+        should.exist(err);
+        err.message.should.equal('Decoded identifier size too large.');
+      });
   });
 });

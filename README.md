@@ -198,7 +198,8 @@ Options:
 - `multibase`: `true` to use multibase encoding to detect id format. (default:
   `true`)
 - `multihash`: `true` to use multihash encoding. (default: `false`)
-- `expectedSize`: Expected size for multihash-encoded ID bytes. (default: 32)
+- `expectedSize`: Expected size for multihash-encoded ID bytes. Use `0` to
+  disable size check. (default: 32)
 
 #### `decode(id)`
 
@@ -266,7 +267,8 @@ Options:
 - `secretKeySeed`: The secret key seed to be decoded.
 - `multibase`: Account for multibase encoding. (default: true)
 - `multihash`: Account for multihash encoding. (default: true)
-- `expectedSize`: Expected size for multihash-encoded ID bytes. (default: 32)
+- `expectedSize`: Expected size for multihash-encoded ID bytes. Use `0` to
+  disable size check. (default: 32)
 
 ## CLI
 

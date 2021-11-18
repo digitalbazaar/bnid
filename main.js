@@ -249,7 +249,8 @@ export class IdDecoder {
    * @param {boolean} [options.multihash=false] - Use multihash encoding to
    *   detect the id format.
    * @param {number} [options.expectedSize=32] - Optional expected identifier
-   *   size in bytes (only for multihash encoding).
+   *   size in bytes (only for multihash encoding). Use `0` to disable size
+   *   check.
    * @returns {IdDecoder} - New IdDecoder.
    */
   constructor({
@@ -484,7 +485,7 @@ export async function generateSecretKeySeed({
  * @param {boolean} [options.multihash=true] - Use multihash encoding to detect
  *   the id format.
  * @param {number} [options.expectedSize] - Optional expected identifier size
- *   in bytes (only for multihash encoding).
+ *   in bytes (only for multihash encoding). Use `0` to disable size check.
  * @param {string} options.secretKeySeed - The secret key seed to be decoded.
  *
  * @returns {Uint8Array} - An array of secret key seed bytes (default size:

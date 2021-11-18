@@ -338,16 +338,20 @@ export class IdDecoder {
         throw new Error(`Decoded identifier size too large.`);
       }
 
-      if(digestSize !== this.expectedSize) {
-        throw new Error('Unexpected identifier size.');
+      const bytes = decoded.subarray(2);
+
+      if(this.expectedSize) {
+        if(digestSize !== this.expectedSize) {
+          throw new Error('Unexpected identifier size.');
+        }
+
+        if(bytes.byteLength !== this.expectedSize) {
+          throw new Error(
+            `Invalid decoded identifier size. Identifier must be ` +
+              `"${this.expectedSize}" bytes.`);
+        }
       }
 
-      const bytes = decoded.subarray(2);
-      if(bytes.byteLength !== this.expectedSize) {
-        throw new Error(
-          `Invalid decoded identifier size. Identifier must be ` +
-          `"${this.expectedSize}" bytes.`);
-      }
       decoded = bytes;
     }
     return decoded;

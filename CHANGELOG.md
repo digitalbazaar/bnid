@@ -4,10 +4,10 @@
 
 ### Added
 - Add `generateSecretKeySeed()` and `decodeSecretKeySeed()`.
-- Add `multihash` boolean parameter to IdEncoder and IdDecoder.
-  A multihash-encoded identifier will use the `identity` multicodec tag (`0x00`).
-  Using multihash has the advantage of including the size of the identifier which
-  can then be verified to have not changed when decoding.
+- Add `multihash` boolean parameter to IdEncoder and IdDecoder. A
+  multihash-encoded identifier will use the `identity` multicodec tag (`0x00`).
+  Using multihash has the advantage of including the size of the identifier
+  which can then be verified to have not changed when decoding.
 - Add `expectedSize` optional parameter to IdDecoder for multihash-encoded ID
   bytes. (default: 32).
 

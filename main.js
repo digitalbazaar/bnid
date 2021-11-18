@@ -210,7 +210,7 @@ export class IdEncoder {
       const byteSize = bytes.length;
 
       if(byteSize > 127) {
-        throw new Error(`Identifier size too large.`);
+        throw new RangeError('Identifier size too large.');
       }
       // <varint hash fn code> <varint digest size in bytes> <hash fn output>
       //  <identity function>             <byte size>                <raw bytes>
@@ -335,21 +335,18 @@ export class IdDecoder {
       const digestSize = decoded[1];
 
       if(digestSize > 127) {
-        throw new Error(`Decoded identifier size too large.`);
+        throw new RangeError('Decoded identifier size too large.');
       }
 
       const bytes = decoded.subarray(2);
 
-      if(this.expectedSize) {
-        if(digestSize !== this.expectedSize) {
-          throw new Error('Unexpected identifier size.');
-        }
-
-        if(bytes.byteLength !== this.expectedSize) {
-          throw new Error(
-            `Invalid decoded identifier size. Identifier must be ` +
-              `"${this.expectedSize}" bytes.`);
-        }
+      if(bytes.byteLength !== digestSize) {
+        throw new RangeError('Unexpected identifier size.');
+      }
+      if(this.expectedSize && bytes.byteLength !== this.expectedSize) {
+        throw new RangeError(
+          `Invalid decoded identifier size. Identifier must be ` +
+            `"${this.expectedSize}" bytes.`);
       }
 
       decoded = bytes;

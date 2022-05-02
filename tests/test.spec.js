@@ -1,14 +1,13 @@
 /*!
-* Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
 */
-
 import {
   default as chai,
   expect
 } from 'chai';
 import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
-global.should = chai.should();
+const should = chai.should();
 
 import {
   IdEncoder,
@@ -20,7 +19,7 @@ import {
   maxEncodedIdBytes,
   generateSecretKeySeed,
   decodeSecretKeySeed,
-} from '..';
+} from '../lib/index.js';
 
 describe('bnid', () => {
   describe('utilities', () => {

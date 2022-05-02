@@ -272,47 +272,8 @@ Options:
 
 ## CLI
 
-A command line interface tool called `bnid` is provided to generate and encode
-ids.
-
-`bnid` can be run installed, run directly, or run via `npx`:
-
-```
-npm install -g bnid
-bnid [OPTIONS]
-```
-```
-./bnid [OPTIONS]
-```
-```
-npx bnid [OPTIONS]
-```
-
-The options follow the API. See help for more information:
-
-```
-npx bnid --help
-```
-
-Examples:
-
-```
-npx bnid
-> zL8ajDGq3G44VpTnB7UVMq2
-npx bnid -e base16 --no-multibase -n 64
-> da3cc9f90f9f8427
-npx bnid -e base16 --no-multibase -n 64 -b 128
-> 000000000000000063bb5478d65f80ab
-npx bnid -n 32
-z6uGJaE
-npx bnid -n 32
-zipFBr
-# Note: -f used to ensure fixed length
-npx bnid -n 32 -f
-z17vsf8
-npx bnid -n 32 -b 64
-z111113TqAT2
-```
+A command line interface tool to generate and encode ids is provided in
+[`bnid-cli`](https://github.com/digitalbazaar/bnid-cli).
 
 ## Contribute
 

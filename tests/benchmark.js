@@ -1,14 +1,14 @@
 /*!
 * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
 */
-const Benchmark = require('benchmark');
+import Benchmark from 'benchmark';
 
 const suite = new Benchmark.Suite();
 
-const {
+import {
   IdGenerator, IdEncoder, IdDecoder, generateId, decodeId
-} = require('..');
-const crypto = require('crypto');
+} from '../lib/index.js';
+import crypto from 'crypto';
 
 // shared state
 const generator = new IdGenerator();

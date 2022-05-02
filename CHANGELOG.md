@@ -1,5 +1,18 @@
 # bnid ChangeLog
 
+## 3.0.0 - 2022-xx-xx
+
+### Removed
+- **BREAKING**: Move command line client into
+  [`bnid-cli`](https://github.com/digitalbazaar/bnid-cli). The primary reason
+  is to reduce `bnid` dependencies.
+
+### Changed
+- **BREAKING**: Convert to module (ESM).
+- **BREAKING**: Require Node.js >=14.
+- Update dependencies.
+- Lint module.
+
 ## 2.1.0 - 2021-11-18
 
 ### Added

@@ -10,6 +10,7 @@
 ### Changed
 - **BREAKING**: Convert to module (ESM).
 - **BREAKING**: Require Node.js >=14.
+- **BREAKING**: Browser support requires `crypto.getRandomValues()`.
 - Update dependencies.
 - Lint module.
 

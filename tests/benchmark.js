@@ -8,7 +8,7 @@ const suite = new Benchmark.Suite();
 import {
   IdGenerator, IdEncoder, IdDecoder, generateId, decodeId
 } from '../lib/index.js';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 // shared state
 const generator = new IdGenerator();

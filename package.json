@@ -24,7 +24,7 @@
   "type": "module",
   "main": "./lib/index.js",
   "files": [
-    "lib"
+    "lib/**/*.js"
   ],
   "browser": {
     "./lib/util.js": "./lib/util-browser.js"

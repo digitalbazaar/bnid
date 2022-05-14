@@ -1,6 +1,6 @@
 # bnid ChangeLog
 
-## 3.0.0 - 2022-xx-xx
+## 3.0.0 - 2022-05-13
 
 ### Removed
 - **BREAKING**: Move command line client into
